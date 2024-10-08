@@ -1,0 +1,1 @@
+All details about database and database queries and structure 
