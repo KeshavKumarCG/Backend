@@ -4,7 +4,7 @@ All details about database and database queries and structure
 
 Here are the command before Sonali Ma'am approved the database(For backup)
 
--> https://dbdiagram.io/d/ValetParkingSystem-Database-Design-67053cc1fb079c7ebdbf8835
+----> https://dbdiagram.io/d/ValetParkingSystem-Database-Design-67053cc1fb079c7ebdbf8835
 
 
 Commands :
