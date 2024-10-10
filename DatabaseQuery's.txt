@@ -3,6 +3,7 @@ All details about database and database queries and structure
 ---------------------------------------------------------------------
 Database Script
 
+Database Name : CarParkingSystem
 
 Commands :
 
