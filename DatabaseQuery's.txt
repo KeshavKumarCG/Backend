@@ -1,1 +1,58 @@
 All details about database and database queries and structure 
+
+---------------------------------------------------------------------
+
+Here are the command before Sonali Ma'am approved the database(For backup)
+
+----> https://dbdiagram.io/d/ValetParkingSystem-Database-Design-67053cc1fb079c7ebdbf8835
+
+
+Commands :
+
+Table Users {
+  UGUID varchar [unique]
+  UserID integer [primary key]
+  Name varchar
+  PhoneNumber varchar
+  Email varchar
+  Password varchar
+  CreatedBy varchar
+  CarGUID varchar
+  CreatedAt timestamp
+  UpdatedBy varchar
+  UpdatedAt timestamp
+}
+
+Table Cars {
+  CarGUID varchar [primary key]
+  CarNumber varchar
+  UserID integer
+  CarModel varchar
+  ValetID integer
+  CarStatus varchar
+  CreatedBy varchar
+  CreatedAt timestamp
+  UpdatedBy varchar
+  UpdatedAt timestamp
+}
+
+Table Valets {
+  VGUID varchar [unique]
+  ValetID integer [primary key]
+  ValetName varchar
+  PhoneNumber varchar
+  Email varchar
+  Password varchar
+  CreatedBy varchar
+  CreatedAt timestamp
+  UpdatedBy varchar
+  UpdatedAt timestamp
+  CarGUID varchar
+}
+
+Ref: Cars.UserID > Users.UserID
+Ref: Cars.ValetID > Valets.ValetID
+Ref: Users.CarGUID > Cars.CarGUID
+Ref: Valets.CarGUID > Cars.CarGUID
+
+---------------------------------------------------------------------
