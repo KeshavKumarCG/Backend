@@ -1,58 +1,61 @@
 All details about database and database queries and structure 
 
 ---------------------------------------------------------------------
-
-Here are the command before Sonali Ma'am approved the database(For backup)
-
-----> https://dbdiagram.io/d/ValetParkingSystem-Database-Design-67053cc1fb079c7ebdbf8835
+Database Script
 
 
 Commands :
 
 Table Users {
-  UGUID varchar [unique]
-  UserID integer [primary key]
+  ID integer [primary key]
+  CYGID varchar [unique]
   Name varchar
-  PhoneNumber varchar
-  Email varchar
+  PhoneNumber varchar [unique]
+  Email varchar [unique]
   Password varchar
+  Role bool
   CreatedBy varchar
-  CarGUID varchar
   CreatedAt timestamp
   UpdatedBy varchar
   UpdatedAt timestamp
+  CarID varchar  // Foreign Key referencing Cars.CarID
 }
-
+ 
 Table Cars {
-  CarGUID varchar [primary key]
+  ID varchar [primary key]
   CarNumber varchar
-  UserID integer
   CarModel varchar
-  ValetID integer
-  CarStatus varchar
+  StatusID varchar  // Foreign Key referencing CarStatus.StatusID
   CreatedBy varchar
   CreatedAt timestamp
   UpdatedBy varchar
   UpdatedAt timestamp
+  OwnerID varchar  // Foreign Key referencing Users.UserID
+  ValetID varchar  // Foreign Key referencing Users.UserID
 }
-
-Table Valets {
-  VGUID varchar [unique]
-  ValetID integer [primary key]
-  ValetName varchar
-  PhoneNumber varchar
-  Email varchar
-  Password varchar
-  CreatedBy varchar
+ 
+Table CarStatus {
+  ID varchar [primary key]
+  CarID varchar  // Foreign Key referencing Cars.CarID
+  Status varchar
+}
+ 
+Table CarStatusLog {
+  ID integer [primary key]
+  UserID varchar  // Foreign Key referencing Users.UserID
+  CarID varchar  // Foreign Key referencing Cars.CarID
+  StatusID varchar
   CreatedAt timestamp
-  UpdatedBy varchar
   UpdatedAt timestamp
-  CarGUID varchar
 }
-
-Ref: Cars.UserID > Users.UserID
-Ref: Cars.ValetID > Valets.ValetID
-Ref: Users.CarGUID > Cars.CarGUID
-Ref: Valets.CarGUID > Cars.CarGUID
-
----------------------------------------------------------------------
+ 
+// Foreign Key Constraints
+Ref: Users.CarID > Cars.ID
+Ref: Cars.OwnerID > Users.ID
+Ref: Cars.ValetID > Users.ID
+Ref: Cars.StatusID > CarStatus.ID
+Ref: CarStatus.CarID > Cars.ID
+Ref: CarStatusLog.UserID > Users.ID
+Ref: CarStatusLog.CarID > Cars.ID
+Ref: CarStatusLog.StatusID > CarStatus.ID
+ 
