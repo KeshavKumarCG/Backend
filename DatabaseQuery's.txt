@@ -6,6 +6,9 @@ Database Script
 Database Name : CarParkingSystem
 
 Commands :
+Create database CarParkingSystem;
+
+Use database CarParkingSystem;
 
 Table Users {
   ID integer [primary key]
