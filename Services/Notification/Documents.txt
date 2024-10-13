@@ -1,0 +1,8 @@
+Overview:
+The SMS Notification System allows you to send SMS messages to users based on their phone numbers. It integrates with Twilio, a cloud communications platform, to facilitate the sending of messages.
+
+Features:
+
+    Send SMS notifications to individual phone numbers.
+    Customizable message content.
+    Error handling for invalid phone numbers and API failures.
