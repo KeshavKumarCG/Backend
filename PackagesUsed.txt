@@ -1,1 +1,39 @@
 packages used in backend .
+
+
+1. Microsoft.AspNetCore.Mvc  
+   - This is the core package for ASP.NET Core MVC, which includes controllers, action results, and model binding.
+   - Install Command:
+     dotnet add package Microsoft.AspNetCore.Mvc
+
+2. Microsoft.AspNetCore.Authentication.Cookies  
+   - This package provides cookie-based authentication functionality, allowing you to manage user sessions via cookies.
+   - Install Command:
+     dotnet add package Microsoft.AspNetCore.Authentication.Cookies
+
+3. Microsoft.AspNetCore.Authentication.JwtBearer  
+   - This package enables JWT bearer token authentication, allowing your API to validate incoming JWT tokens.
+   - Install Command:
+     dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
+
+4. Microsoft.IdentityModel.Tokens  
+   - This package provides the necessary classes for creating and validating tokens, including JWTs.
+   - Install Command:
+     dotnet add package Microsoft.IdentityModel.Tokens
+
+5. System.IdentityModel.Tokens.Jwt  
+   - This package contains the classes needed to create and read JWT tokens.
+   - Install Command:
+     dotnet add package System.IdentityModel.Tokens.Jwt
+
+6. Microsoft.EntityFrameworkCore  
+   - This package is essential for working with Entity Framework Core, allowing you to interact with your SQL Server database.
+   - Install Command:
+     dotnet add package Microsoft.EntityFrameworkCore
+
+7. Microsoft.EntityFrameworkCore.SqlServer  
+   - This package provides SQL Server database provider support for Entity Framework Core.
+   - Install Command:
+     dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+
+
