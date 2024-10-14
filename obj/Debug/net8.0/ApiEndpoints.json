@@ -2,14 +2,14 @@
   {
     "ContainingType": "Backend.Controllers.AuthController",
     "Method": "Login",
-    "RelativePath": "api/Auth/login",
+    "RelativePath": "login",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "loginRequest",
-        "Type": "Backend.Models.LoginRequest",
+        "Name": "loginModel",
+        "Type": "Backend.Models.LoginModel",
         "IsRequired": true
       }
     ],

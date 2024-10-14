@@ -1,18 +1,33 @@
-﻿namespace Backend.Models
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+
+namespace Backend.Models
 {
     public class User
     {
+        [Key]
         public int ID { get; set; }
+
+        [Required]
         public string CYGID { get; set; }
+
+        [Required]
         public string Name { get; set; }
-        public int PhoneNumber { get; set; }
+
+        [Required]
+        public string PhoneNumber { get; set; }
+
+        [Required]
+        [EmailAddress]
         public string Email { get; set; }
+
+        [Required]
         public string Password { get; set; }
-        public bool Role { get; set; } 
-        public string CreatedBy { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public string UpdatedBy { get; set; }
-        public DateTime UpdatedAt { get; set; }
-        public int? CarID { get; set; }
+
+        [Required]
+        public bool Role { get; set; }
+
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }
 }

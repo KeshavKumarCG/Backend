@@ -1,13 +1,12 @@
 ﻿using Backend.Models;
-using Backend.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+using System.Security.Claims;
 
 namespace Backend.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AuthController : ControllerBase
+    public class AuthController : Controller
     {
         private readonly AuthService _authService;
 
@@ -17,33 +16,35 @@ namespace Backend.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
+        public async Task<IActionResult> Login([FromBody] LoginModel loginModel)
         {
-            if (loginRequest == null || string.IsNullOrEmpty(loginRequest.EmailOrPhone) || string.IsNullOrEmpty(loginRequest.Password))
+            var (token, user) = _authService.Authenticate(loginModel);
+            if (token == null || user == null)
+                return Unauthorized();
+
+            // Set a cookie with the token
+            var claims = new List<Claim>
             {
-                return BadRequest("Invalid login request.");
-            }
+                new Claim(ClaimTypes.Name, user.Email),
+                new Claim(ClaimTypes.Role, user.Role ? "User" : "Valet") // Determine role based on bool
+            };
 
-            var (token, user) = await _authService.AuthenticateAsync(loginRequest);
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-            if (token == null)
+            var authProperties = new AuthenticationProperties
             {
-                return Unauthorized("Invalid credentials.");
-            }
+                IsPersistent = true,
+                ExpiresUtc = DateTimeOffset.UtcNow.AddHours(1)
+            };
 
-            // Return token and user details
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity), authProperties);
+
             return Ok(new
             {
                 Token = token,
-                User = new
-                {
-                    user.ID,
-                    user.CYGID,
-                    user.Name,
-                    user.PhoneNumber,
-                    user.Email,
-                    user.Role,
-                }
+                Name = user.Email,
+                Role = user.Role ? "User" : "Valet" // Return role as string
             });
         }
     }

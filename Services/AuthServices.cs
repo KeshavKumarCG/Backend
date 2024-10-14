@@ -1,34 +1,22 @@
-﻿using Backend.Data;
-using Backend.Models;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
+﻿using Backend.Models;
 
-namespace Backend.Services
+public class AuthService
 {
-    public class AuthService
+    private readonly JwtServices _jwServices;
+
+    public AuthService(JwtServices jwServices)
     {
-        private readonly ValetParkingDbContext _context;
-        private readonly JwtService _jwtService;
+        _jwServices = jwServices;
+    }
 
-        public AuthService(ValetParkingDbContext context, JwtService jwtService)
+    // Updated to return a tuple with both token and user
+    public (string token, User user) Authenticate(LoginModel loginModel)
+    {
+        if (_jwServices.ValidateUser(loginModel, out var user))
         {
-            _context = context;
-            _jwtService = jwtService;
+            var token = _jwServices.GenerateToken(user);
+            return (token, user); // Return both token and user
         }
-
-        public async Task<(string, User)> AuthenticateAsync(LoginRequest loginRequest)
-        {
-            var user = await _context.Users
-                
-                .FirstOrDefaultAsync(u =>
-                    (u.Email == loginRequest.EmailOrPhone || u.PhoneNumber.ToString() == loginRequest.EmailOrPhone)
-                    && u.Password == loginRequest.Password);
-
-            if (user == null)
-                return (null, null);
-
-            var token = _jwtService.GenerateJwtToken(user);
-            return (token, user);
-        }
+        return (null, null);
     }
 }

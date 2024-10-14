@@ -1,42 +1,53 @@
-﻿using Backend.Models;
+﻿using Backend.Data;
+using Backend.Models;
 using Microsoft.IdentityModel.Tokens;
-using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Backend.Services
+public class JwtServices
 {
-    public class JwtService
+    private readonly CarParkingContext _context;
+    private readonly IConfiguration _configuration;
+
+    public JwtServices(CarParkingContext context, IConfiguration configuration)
     {
-        private readonly string _secret;
-        private readonly int _lifespan;
+        _context = context;
+        _configuration = configuration;
+    }
 
-        public JwtService(string secret, int lifespan)
+    public string GenerateToken(User user)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"] ?? throw new InvalidOperationException("JWT Key is not configured."));
+
+        var tokenDescriptor = new SecurityTokenDescriptor
         {
-            _secret = secret;
-            _lifespan = lifespan;
-        }
-
-        public string GenerateJwtToken(User user)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_secret);
-
-            var tokenDescriptor = new SecurityTokenDescriptor
+            Subject = new ClaimsIdentity(new[]
             {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.NameIdentifier, user.ID.ToString()),
-                    new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Role, user.Role ? "Valet" : "User")
-                }),
-                Expires = DateTime.UtcNow.AddMinutes(_lifespan),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
+                new Claim(ClaimTypes.Name, user.Email),
+                new Claim(ClaimTypes.Role, user.Role ? "User" : "Valet") // Correctly add role as string based on bool
+            }),
+            Expires = DateTime.UtcNow.AddHours(1),
+            Issuer = _configuration["Jwt:Issuer"],
+            Audience = _configuration["Jwt:Audience"],
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+        };
 
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        return tokenHandler.WriteToken(token);
+    }
+
+    public bool ValidateUser(LoginModel loginModel, out User? user)
+    {
+        user = _context.Users.FirstOrDefault(u =>
+            u.Email == loginModel.EmailOrPhone || u.PhoneNumber == loginModel.EmailOrPhone);
+
+        if (user == null)
+        {
+            return false;
         }
+
+        return loginModel.Password == user.Password; // Assuming plaintext password
     }
 }

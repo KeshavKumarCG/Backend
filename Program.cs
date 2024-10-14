@@ -1,60 +1,22 @@
 using Backend.Data;
-using Backend.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System;
+using Microsoft.OpenApi.Models;
 using System.Text;
-using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configure DbContext with SQL Server connection
-builder.Services.AddDbContext<ValetParkingDbContext>(options =>
+// Add services to the container
+builder.Services.AddDbContext<CarParkingContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Add JWT Service
-builder.Services.AddScoped<JwtService>(sp =>
-{
-    var jwtSecret = builder.Configuration["JwtSettings:Secret"];
-    if (string.IsNullOrEmpty(jwtSecret))
-    {
-        throw new ArgumentNullException(nameof(jwtSecret), "JWT Secret is not configured.");
-    }
+builder.Services.AddControllers();
+builder.Services.AddScoped<AuthService>();  // Register AuthService
+builder.Services.AddScoped<JwtServices>();   // Register JWServices
 
-    var lifespanString = builder.Configuration["JwtSettings:Lifespan"];
-    if (!int.TryParse(lifespanString, out int lifespan))
-    {
-        throw new ArgumentException("Invalid lifespan value.", nameof(lifespanString));
-    }
-
-    return new JwtService(jwtSecret, lifespan);
-});
-
-// Add Authentication Service
-builder.Services.AddScoped<AuthService>();
-
-// Configure CORS to allow specific origins (adjust to your frontend's URL)
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowSpecificOrigin", policy =>
-    {
-        policy.WithOrigins("http://localhost:4200")  // Replace with your Angular app URL
-              .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials();  // Important for cookies
-    });
-});
-
-// Configure Cookie policy
-builder.Services.ConfigureApplicationCookie(options =>
-{
-    options.Cookie.HttpOnly = true; // Ensure cookie is accessible only via HTTP(S)
-    options.Cookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.Always; // Only send cookies over HTTPS
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(60); // Set cookie expiration
-});
-
-// Configure JWT Authentication
+// Configure Authentication
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -62,59 +24,66 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
-    var key = Encoding.ASCII.GetBytes(builder.Configuration["JwtSettings:Secret"]!);
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(key),
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
         ValidateIssuer = false,
-        ValidateAudience = false,
-        ClockSkew = TimeSpan.Zero // Remove expiration delay
+        ValidateAudience = false
     };
-    options.SaveToken = true; // Save the JWT token in the authentication properties
-    options.Events = new JwtBearerEvents
-    {
-        OnMessageReceived = context =>
-        {
-            // For cookie-based token handling
-            var accessToken = context.Request.Cookies["access_token"];
-            if (!string.IsNullOrEmpty(accessToken))
-            {
-                context.Token = accessToken;
-            }
-            return Task.CompletedTask;
-        }
-    };
+})
+.AddCookie(options =>
+{
+    options.LoginPath = "/api/auth/login"; // Redirect to this path for login
+    options.LogoutPath = "/api/auth/logout"; // Optional, for logout path
 });
 
-builder.Services.AddAuthorization();
-
-// Add controllers and other services
-builder.Services.AddControllers();
+// Add Swagger services
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Car Parking System API", Version = "v1" });
 
-// Build the application
+    // Add JWT Authentication to Swagger
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
+
 var app = builder.Build();
 
-// Enable Swagger for testing the API
-if (app.Environment.IsDevelopment())
+// Middleware configuration
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Car Parking System API v1");
+    c.RoutePrefix = "swagger"; // Set the Swagger UI to "/swagger/index.html"
+});
 
-// Enable CORS middleware
-app.UseCors("AllowSpecificOrigin");
-
-// Enable cookie handling (for storing JWT tokens in cookies)
-app.UseCookiePolicy();
-
-// Enable authentication and authorization middleware
+// Add authentication and authorization middleware
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Map the controllers
 app.MapControllers();
 
 app.Run();
