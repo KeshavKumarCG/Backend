@@ -17,6 +17,6 @@ public class AuthService
             var token = _jwServices.GenerateToken(user);
             return (token, user); // Return both token and user
         }
-        return (null, null);
+        return (null, null); // Return nulls if authentication fails
     }
 }
