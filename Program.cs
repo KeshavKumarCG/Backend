@@ -12,9 +12,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<CarParkingContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Register services
+builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<JwtServices>();
+
+// Add controllers
 builder.Services.AddControllers();
-builder.Services.AddScoped<AuthService>();  // Register AuthService
-builder.Services.AddScoped<JwtServices>();   // Register JWServices
 
 // Configure Authentication
 builder.Services.AddAuthentication(options =>
@@ -90,6 +93,9 @@ app.UseSwaggerUI(c =>
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Car Parking System API v1");
     c.RoutePrefix = "swagger"; // Set the Swagger UI to "/swagger/index.html"
 });
+
+// Use CORS
+app.UseCors(); // Ensure CORS is used before authentication
 
 // Add authentication and authorization middleware
 app.UseAuthentication();
