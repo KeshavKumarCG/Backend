@@ -43,7 +43,7 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
     {
-        builder.AllowAnyOrigin()
+        builder.WithOrigins("http://localhost:4200/home") // Your Angular app URL
                .AllowAnyMethod()
                .AllowAnyHeader();
     });
@@ -91,7 +91,9 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = "swagger"; // Set the Swagger UI to "/swagger/index.html"
 });
 
-// Add authentication and authorization middleware
+// Add CORS middleware before Authentication and Authorization
+app.UseCors();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
