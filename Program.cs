@@ -19,7 +19,7 @@ builder.Services.AddScoped<JwtServices>();
 // Add controllers
 builder.Services.AddControllers();
 
-// Configure Authentication
+// Configure Authentication and JWT Bearer
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -32,27 +32,30 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
         ValidateIssuer = false,
-        ValidateAudience = false
+        ValidateAudience = false,
+        ValidateLifetime = true,  // Ensure token expiration is validated
+        ClockSkew = TimeSpan.Zero  // Optional: Reduce clock skew tolerance (e.g., 5 minutes)
     };
 })
 .AddCookie(options =>
 {
-    options.LoginPath = "/api/auth/login"; // Redirect to this path for login
+    options.LoginPath = "/api/auth/login";  // Redirect to this path for login
     options.LogoutPath = "/api/auth/logout"; // Optional, for logout path
 });
 
-// Add CORS
+// Add CORS policy for Angular frontend
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(builder =>
+    options.AddPolicy("AllowAngularApp", builder =>
     {
-        builder.AllowAnyOrigin()
+        builder.WithOrigins("http://localhost:4200") // Replace with your Angular app URL
                .AllowAnyMethod()
-               .AllowAnyHeader();
+               .AllowAnyHeader()
+               .AllowCredentials(); // Optional: If you're using credentials
     });
 });
 
-// Add Swagger services
+// Add Swagger services for API documentation and JWT support in Swagger UI
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -86,21 +89,36 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// Middleware configuration
+// Error handling middleware
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+else
+{
+    app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
+}
+
+// Middleware configuration for Swagger UI
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Car Parking System API v1");
-    c.RoutePrefix = "swagger"; // Set the Swagger UI to "/swagger/index.html"
+    c.RoutePrefix = "swagger";  // Set the Swagger UI to "/swagger/index.html"
 });
 
-// Use CORS
-app.UseCors(); // Ensure CORS is used before authentication
+// Apply CORS policy before authentication and authorization
+app.UseCors("AllowAngularApp");
+
+// Add HTTPS redirection (optional, based on your configuration)
+app.UseHttpsRedirection();
 
 // Add authentication and authorization middleware
 app.UseAuthentication();
 app.UseAuthorization();
 
+// Map controllers
 app.MapControllers();
 
 app.Run();
