@@ -1,8 +1,11 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Controllers"
+    "\\Controllers",
+    "\\Data",
+    "\\Models",
+    "\\Services"
   ],
-  "SelectedNode": "\\Controllers\\SearchFunctionalityController.cs",
+  "SelectedNode": "\\Program.cs",
   "PreviewInSolutionExplorer": false
 }

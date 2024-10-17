@@ -12,12 +12,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<CarParkingContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Register services
-builder.Services.AddScoped<AuthService>();
-builder.Services.AddScoped<JwtServices>();
-
-// Add controllers
 builder.Services.AddControllers();
+builder.Services.AddScoped<AuthService>();  // Register AuthService
+builder.Services.AddScoped<JwtServices>();   // Register JWServices
 
 // Configure Authentication
 builder.Services.AddAuthentication(options =>
@@ -46,7 +43,7 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
     {
-        builder.AllowAnyOrigin()
+        builder.WithOrigins("http://localhost:4200/home") // Your Angular app URL
                .AllowAnyMethod()
                .AllowAnyHeader();
     });
@@ -94,10 +91,9 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = "swagger"; // Set the Swagger UI to "/swagger/index.html"
 });
 
-// Use CORS
-app.UseCors(); // Ensure CORS is used before authentication
+// Add CORS middleware before Authentication and Authorization
+app.UseCors();
 
-// Add authentication and authorization middleware
 app.UseAuthentication();
 app.UseAuthorization();
 
