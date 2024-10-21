@@ -5,12 +5,21 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using DotNetEnv;  // Add this to load environment variables from .env file
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Load environment variables from the .env file
+Env.Load();  // This loads the environment variables from the .env file
+
+// Fetch the connection string from environment variables
+var connectionString = Environment.GetEnvironmentVariable("Connect_String");
+
 // Add services to the container
 builder.Services.AddDbContext<CarParkingContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+{
+    options.UseSqlServer(connectionString);  // Use the connection string loaded from the .env file
+});
 
 // Register services
 builder.Services.AddScoped<AuthService>();
