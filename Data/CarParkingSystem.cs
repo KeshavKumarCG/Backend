@@ -11,5 +11,6 @@ namespace Backend.Data
         public DbSet<Car> Cars { get; set; }
         public DbSet<CarStatus> CarStatus { get; set; }
         public DbSet<CarStatusLog> CarStatusLogs { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
     }
 }
