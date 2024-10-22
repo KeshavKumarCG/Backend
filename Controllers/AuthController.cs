@@ -8,7 +8,7 @@ namespace Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController] // Add ApiController attribute for automatic model validation and other benefits
-    public class AuthController : ControllerBase // Use ControllerBase for API controller
+    public class AuthController : ControllerBase
     {
         private readonly AuthService _authService;
 
@@ -20,36 +20,32 @@ namespace Backend.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel loginModel)
         {
-            // Authenticate user
             var (token, user) = _authService.Authenticate(loginModel);
             if (token == null || user == null)
                 return Unauthorized();
 
-            // Set claims for the authenticated user
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.Email),
-                new Claim(ClaimTypes.Role, user.Role ? "User" : "Valet") // Assuming user.Role is a bool
+                new Claim(ClaimTypes.Role, user.Role ? "User" : "Valet")
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
             var authProperties = new AuthenticationProperties
             {
-                IsPersistent = true, // Remembers the user after they close the browser
-                ExpiresUtc = DateTimeOffset.UtcNow.AddHours(1) // Set token expiration
+                IsPersistent = true,
+                ExpiresUtc = DateTimeOffset.UtcNow.AddHours(1)
             };
 
-            // Sign in the user
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(claimsIdentity), authProperties);
 
-            // Return response with token and user details
             return Ok(new
             {
                 Token = token,
                 Name = user.Email,
-                Role = user.Role ? "User" : "Valet" // Return role as string
+                Role = user.Role ? "User" : "Valet"
             });
         }
 

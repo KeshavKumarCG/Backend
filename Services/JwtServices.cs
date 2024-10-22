@@ -27,7 +27,7 @@ public class JwtServices
             Subject = new ClaimsIdentity(new[]
             {
                 new Claim(ClaimTypes.Name, user.Email),
-                new Claim(ClaimTypes.Role, user.Role ? "User" : "Valet") // Correctly add role as string based on bool
+                new Claim(ClaimTypes.Role, user.Role ? "User" : "Valet") 
             }),
             Expires = DateTime.UtcNow.AddHours(1),
             Issuer = _configuration["Jwt:Issuer"],
