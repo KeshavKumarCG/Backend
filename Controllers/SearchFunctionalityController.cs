@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Backend.Data; // Ensure this matches your context's namespace
-using Backend.Models; // Include the namespace for your models
+using Backend.Data;
+using Backend.Models; 
 using System.Threading.Tasks;
 
-namespace Backend.Controllers // Adjust to your project namespace
+namespace Backend.Controllers 
 {
     [Route("api/[controller]")]
     [ApiController]
