@@ -442,6 +442,7 @@ C:\Users\HarshdeepSingh\Desktop\Collab-Parking-System\Backend\obj\Debug\net8.0\B
 C:\Users\HarshdeepSingh\Desktop\Collab-Parking-System\Backend\obj\Debug\net8.0\Backend.csproj.Up2Date
 C:\Users\HarshdeepSingh\Desktop\Collab-Parking-System\Backend\obj\Debug\net8.0\Backend.genruntimeconfig.cache
 C:\Users\HarshdeepSingh\Desktop\Collab-Parking-System\Backend\obj\Debug\net8.0\ref\Backend.dll
+<<<<<<< HEAD
 C:\Users\GursimranKaur\Desktop\Collab-Project\Backend\bin\Debug\net8.0\appsettings.Development.json
 C:\Users\GursimranKaur\Desktop\Collab-Project\Backend\bin\Debug\net8.0\appsettings.json
 C:\Users\GursimranKaur\Desktop\Collab-Project\Backend\bin\Debug\net8.0\Backend.exe
@@ -593,3 +594,7 @@ C:\Users\GursimranKaur\Desktop\Collab-Project\Backend\obj\Debug\net8.0\refint\Ba
 C:\Users\GursimranKaur\Desktop\Collab-Project\Backend\obj\Debug\net8.0\Backend.pdb
 C:\Users\GursimranKaur\Desktop\Collab-Project\Backend\obj\Debug\net8.0\Backend.genruntimeconfig.cache
 C:\Users\GursimranKaur\Desktop\Collab-Project\Backend\obj\Debug\net8.0\ref\Backend.dll
+=======
+C:\Users\KeshavKumar\Documents\CG Assignment\Backend\bin\Debug\net8.0\DotNetEnv.dll
+C:\Users\KeshavKumar\Documents\CG Assignment\Backend\bin\Debug\net8.0\Sprache.dll
+>>>>>>> a05bd77423a82a2ada61b044496fcb5ecd36ab39

@@ -15,7 +15,6 @@ Env.Load();  // This loads the environment variables from the .env file
 // Fetch the connection string from environment variables
 var connectionString = Environment.GetEnvironmentVariable("Connect_String");
 
-
 // Add services to the container
 builder.Services.AddDbContext<CarParkingContext>(options =>
 {
