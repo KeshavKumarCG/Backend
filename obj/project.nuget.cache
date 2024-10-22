@@ -228,5 +228,12 @@
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
     "C:\\Users\\ShantanuSahoo\\.nuget\\packages\\twilio\\7.5.1\\twilio.7.5.1.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file C:\\Users\\ShantanuSahoo\\Desktop\\NBCD\\ParkingSystemBackend\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }

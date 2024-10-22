@@ -23,7 +23,7 @@ namespace Backend.Controllers // Adjust to your project namespace
             var result = await (from car in _context.Cars
                                 join status in _context.CarStatus on car.StatusID equals status.ID
                                 join user in _context.Users on car.OwnerID equals user.ID
-                                where user.Role == true // Corrected to compare with true
+                                where user.Role == true
                                 select new
                                 {
                                     CarID = car.ID,

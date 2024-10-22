@@ -17,7 +17,6 @@ namespace Backend.Controllers
             _context = context;
         }
 
-        // GET: api/users/{id}
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
