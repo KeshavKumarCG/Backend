@@ -22,8 +22,12 @@
           "Microsoft.EntityFrameworkCore.Tools": "8.0.10",
           "Microsoft.Extensions.Configuration": "8.0.0",
           "Microsoft.Extensions.Configuration.Json": "8.0.1",
+          "Microsoft.Extensions.DependencyInjection": "8.0.1",
+          "Newtonsoft.Json": "13.0.3",
           "Swashbuckle.AspNetCore": "6.9.0",
-          "System.IdentityModel.Tokens.Jwt": "8.1.2"
+          "System.IdentityModel.Tokens.Jwt": "8.1.2",
+          "Twilio": "7.5.1",
+          "Twilio.AspNet.Core": "8.0.2"
         },
         "runtime": {
           "Backend.dll": {}
@@ -858,6 +862,11 @@
           "Microsoft.Extensions.Primitives": "8.0.0"
         }
       },
+      "Microsoft.Extensions.Configuration.Binder/7.0.3": {
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.Abstractions": "8.0.0"
+        }
+      },
       "Microsoft.Extensions.Configuration.FileExtensions/8.0.1": {
         "dependencies": {
           "Microsoft.Extensions.Configuration": "8.0.0",
@@ -938,6 +947,14 @@
           "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.2",
           "Microsoft.Extensions.FileProviders.Abstractions": "8.0.0",
           "Microsoft.Extensions.Logging.Abstractions": "8.0.2"
+        }
+      },
+      "Microsoft.Extensions.Http/7.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.2",
+          "Microsoft.Extensions.Logging": "8.0.1",
+          "Microsoft.Extensions.Logging.Abstractions": "8.0.2",
+          "Microsoft.Extensions.Options": "8.0.2"
         }
       },
       "Microsoft.Extensions.Localization/2.2.0": {
@@ -1355,6 +1372,27 @@
       "System.Collections.Immutable/6.0.0": {
         "dependencies": {
           "System.Runtime.CompilerServices.Unsafe": "6.0.0"
+        }
+      },
+      "System.Collections.NonGeneric/4.3.0": {
+        "dependencies": {
+          "System.Diagnostics.Debug": "4.3.0",
+          "System.Globalization": "4.3.0",
+          "System.Resources.ResourceManager": "4.3.0",
+          "System.Runtime": "4.3.1",
+          "System.Runtime.Extensions": "4.3.0",
+          "System.Threading": "4.3.0"
+        }
+      },
+      "System.Collections.Specialized/4.3.0": {
+        "dependencies": {
+          "System.Collections.NonGeneric": "4.3.0",
+          "System.Globalization": "4.3.0",
+          "System.Globalization.Extensions": "4.3.0",
+          "System.Resources.ResourceManager": "4.3.0",
+          "System.Runtime": "4.3.1",
+          "System.Runtime.Extensions": "4.3.0",
+          "System.Threading": "4.3.0"
         }
       },
       "System.ComponentModel.Annotations/4.5.0": {},
@@ -2097,6 +2135,42 @@
           "System.Threading": "4.3.0",
           "System.Xml.ReaderWriter": "4.3.0"
         }
+      },
+      "Twilio/7.5.1": {
+        "dependencies": {
+          "Microsoft.IdentityModel.Tokens": "8.1.2",
+          "Newtonsoft.Json": "13.0.3",
+          "System.Collections.Specialized": "4.3.0",
+          "System.IdentityModel.Tokens.Jwt": "8.1.2"
+        },
+        "runtime": {
+          "lib/net6.0/Twilio.dll": {
+            "assemblyVersion": "7.5.1.0",
+            "fileVersion": "7.5.1.0"
+          }
+        }
+      },
+      "Twilio.AspNet.Common/8.0.2": {
+        "runtime": {
+          "lib/netstandard2.0/Twilio.AspNet.Common.dll": {
+            "assemblyVersion": "8.0.2.0",
+            "fileVersion": "8.0.2.0"
+          }
+        }
+      },
+      "Twilio.AspNet.Core/8.0.2": {
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.Binder": "7.0.3",
+          "Microsoft.Extensions.Http": "7.0.0",
+          "Twilio": "7.5.1",
+          "Twilio.AspNet.Common": "8.0.2"
+        },
+        "runtime": {
+          "lib/net7.0/Twilio.AspNet.Core.dll": {
+            "assemblyVersion": "8.0.2.0",
+            "fileVersion": "8.0.2.0"
+          }
+        }
       }
     }
   },
@@ -2631,6 +2705,13 @@
       "path": "microsoft.extensions.configuration.abstractions/8.0.0",
       "hashPath": "microsoft.extensions.configuration.abstractions.8.0.0.nupkg.sha512"
     },
+    "Microsoft.Extensions.Configuration.Binder/7.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-1eRFwJBrkkncTpvh6mivB8zg4uBVm6+Y6stEJERrVEqZZc8Hvf+N1iIgj2ySYDUQko4J1Gw1rLf1M8bG83F0eA==",
+      "path": "microsoft.extensions.configuration.binder/7.0.3",
+      "hashPath": "microsoft.extensions.configuration.binder.7.0.3.nupkg.sha512"
+    },
     "Microsoft.Extensions.Configuration.FileExtensions/8.0.1": {
       "type": "package",
       "serviceable": true,
@@ -2700,6 +2781,13 @@
       "sha512": "sha512-+k4AEn68HOJat5gj1TWa6X28WlirNQO9sPIIeQbia+91n03esEtMSSoekSTpMjUzjqtJWQN3McVx0GvSPFHF/Q==",
       "path": "microsoft.extensions.hosting.abstractions/2.2.0",
       "hashPath": "microsoft.extensions.hosting.abstractions.2.2.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Http/7.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-9Pq9f/CvOSz0t9yQa6g1uWpxa2sm13daLFm8EZwy9MaQUjKXWdNUXQwIxwhmba5N83UIqURiPHSNqGK1vfWF2w==",
+      "path": "microsoft.extensions.http/7.0.0",
+      "hashPath": "microsoft.extensions.http.7.0.0.nupkg.sha512"
     },
     "Microsoft.Extensions.Localization/2.2.0": {
       "type": "package",
@@ -3085,6 +3173,20 @@
       "sha512": "sha512-l4zZJ1WU2hqpQQHXz1rvC3etVZN+2DLmQMO79FhOTZHMn8tDRr+WU287sbomD0BETlmKDn0ygUgVy9k5xkkJdA==",
       "path": "system.collections.immutable/6.0.0",
       "hashPath": "system.collections.immutable.6.0.0.nupkg.sha512"
+    },
+    "System.Collections.NonGeneric/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-prtjIEMhGUnQq6RnPEYLpFt8AtLbp9yq2zxOSrY7KJJZrw25Fi97IzBqY7iqssbM61Ek5b8f3MG/sG1N2sN5KA==",
+      "path": "system.collections.nongeneric/4.3.0",
+      "hashPath": "system.collections.nongeneric.4.3.0.nupkg.sha512"
+    },
+    "System.Collections.Specialized/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Epx8PoVZR0iuOnJJDzp7pWvdfMMOAvpUo95pC4ScH2mJuXkKA2Y4aR3cG9qt2klHgSons1WFh4kcGW7cSXvrxg==",
+      "path": "system.collections.specialized/4.3.0",
+      "hashPath": "system.collections.specialized.4.3.0.nupkg.sha512"
     },
     "System.ComponentModel.Annotations/4.5.0": {
       "type": "package",
@@ -3645,6 +3747,27 @@
       "sha512": "sha512-5zJ0XDxAIg8iy+t4aMnQAu0MqVbqyvfoUVl1yDV61xdo3Vth45oA2FoY4pPkxYAH5f8ixpmTqXeEIya95x0aCQ==",
       "path": "system.xml.xdocument/4.3.0",
       "hashPath": "system.xml.xdocument.4.3.0.nupkg.sha512"
+    },
+    "Twilio/7.5.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-56SB0A60Js2T32+OR8TLQ8M6WXdCQVLHv+LzEfG5m+zcHDRF8m7RhRB5gRqIBkJGKncikEc2oIBM+HHAYeTj4w==",
+      "path": "twilio/7.5.1",
+      "hashPath": "twilio.7.5.1.nupkg.sha512"
+    },
+    "Twilio.AspNet.Common/8.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-264FmpwK/0efs6Y5x86Am+KTvhnWNjfyLbuQKm3kB1AwfJMVMrUIrUZWGmu+qINsC6VFS1EU4xKl4OwZsnG+sQ==",
+      "path": "twilio.aspnet.common/8.0.2",
+      "hashPath": "twilio.aspnet.common.8.0.2.nupkg.sha512"
+    },
+    "Twilio.AspNet.Core/8.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-/Cz9WMCObGg0JVVnyhrEjiA+90+kB1hqmbGxsaX/Cz7w5rtLoBVUX3QThIx7/H6mwuQkuINPtij2qm7D7XX3rw==",
+      "path": "twilio.aspnet.core/8.0.2",
+      "hashPath": "twilio.aspnet.core.8.0.2.nupkg.sha512"
     }
   }
 }

@@ -109,6 +109,14 @@
               "target": "Package",
               "version": "[8.0.1, )"
             },
+            "Microsoft.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[8.0.1, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.9.0, )"
@@ -116,6 +124,14 @@
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
               "version": "[8.1.2, )"
+            },
+            "Twilio": {
+              "target": "Package",
+              "version": "[7.5.1, )"
+            },
+            "Twilio.AspNet.Core": {
+              "target": "Package",
+              "version": "[8.0.2, )"
             }
           },
           "imports": [
