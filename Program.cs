@@ -1,3 +1,5 @@
+
+
 using Backend.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -11,16 +13,20 @@ var builder = WebApplication.CreateBuilder(args);
 
 Env.Load();
 
-var connectionString = Environment.GetEnvironmentVariable("Connect_String");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<CarParkingContext>(options =>
 {
     options.UseSqlServer(connectionString);
 });
 
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+{
+    options.UseSqlServer(connectionString);
+});
+
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<JwtServices>();
-
 builder.Services.AddControllers();
 
 builder.Services.AddAuthentication(options =>
@@ -116,3 +122,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
