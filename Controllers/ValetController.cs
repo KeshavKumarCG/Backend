@@ -19,13 +19,12 @@ namespace Backend.Controllers
             _context = context;
         }
 
-        // GET: api/valet
         [HttpGet]
         public async Task<ActionResult<List<User>>> GetValets()
         {
             var valets = await _context.Users
-                .Where(u => u.Role == false)  // Role false indicates valet
-                .Select(u => new               // Project only specific fields
+                .Where(u => u.Role == false)
+                .Select(u => new
                 {
                     u.Name,
                     u.PhoneNumber,
@@ -36,13 +35,12 @@ namespace Backend.Controllers
             return Ok(valets);
         }
 
-        // GET: api/valet/5
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetValetById(int id)
         {
             var valet = await _context.Users
                 .Where(u => u.ID == id && u.Role == false)
-                .Select(u => new               // Project only specific fields
+                .Select(u => new
                 {
                     u.Name,
                     u.PhoneNumber,
