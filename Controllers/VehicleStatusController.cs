@@ -20,12 +20,13 @@ namespace Backend.Controllers
         {
             string message = $"Vehicle Status Update:\n" +
                              $"Owner: {notification.OwnerName}\n" +
+                            //   $"Owner Phone: {notification.OwnerPhoneNumber}\n" +
                              $"CYGID: {notification.Cygid}\n" +
                              $"Car Model: {notification.CarModel}\n" +
                              $"License Plate: {notification.LicensePlate}\n" +
                              $"Status: Car is ready for pickup";
 
-            _smsService.SendSms("+919749494476", message);
+            _smsService.SendSms("+919417230210", message);
 
             return Ok("Valet notified successfully");
         }

@@ -23,8 +23,8 @@ namespace Backend.Services
         {
             var message = MessageResource.Create(
                 body: messageBody,
-                from: new PhoneNumber(_fromPhoneNumber),
-                to: new PhoneNumber(toPhoneNumber)
+                from: new PhoneNumber("+18186166462"),
+                to: new PhoneNumber("+918307224389")
             );
         }
     }
