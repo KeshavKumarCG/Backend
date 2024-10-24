@@ -49,6 +49,6 @@ public class JwtServices
             return false;
         }
 
-        return loginModel.Password == user.Password; // Assuming plaintext password
+        return loginModel.Password == user.Password; 
     }
 }
