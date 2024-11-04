@@ -24,7 +24,7 @@ namespace Backend.Controllers
         public async Task<ActionResult<IEnumerable<CarDetails>>> GetCarDetailsByUserId(int id)
         {
             var cars = await _context.Cars
-                .Where(c => c.OwnerID == id) // Filter cars by user ID
+                .Where(c => c.OwnerID == id) 
                 .Select(c => new CarDetails
                 {
                     ID = c.ID,
