@@ -1495,25 +1495,6 @@
           "buildTransitive/net6.0/_._": {}
         }
       },
-      "Microsoft.Extensions.Configuration.Binder/7.0.3": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Extensions.Configuration.Abstractions": "7.0.0"
-        },
-        "compile": {
-          "lib/net7.0/Microsoft.Extensions.Configuration.Binder.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net7.0/Microsoft.Extensions.Configuration.Binder.dll": {
-            "related": ".xml"
-          }
-        },
-        "build": {
-          "buildTransitive/net6.0/_._": {}
-        }
-      },
       "Microsoft.Extensions.Configuration.FileExtensions/8.0.1": {
         "type": "package",
         "dependencies": {
@@ -1699,28 +1680,6 @@
           "lib/netstandard2.0/Microsoft.Extensions.Hosting.Abstractions.dll": {
             "related": ".xml"
           }
-        }
-      },
-      "Microsoft.Extensions.Http/7.0.0": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "7.0.0",
-          "Microsoft.Extensions.Logging": "7.0.0",
-          "Microsoft.Extensions.Logging.Abstractions": "7.0.0",
-          "Microsoft.Extensions.Options": "7.0.0"
-        },
-        "compile": {
-          "lib/net7.0/Microsoft.Extensions.Http.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net7.0/Microsoft.Extensions.Http.dll": {
-            "related": ".xml"
-          }
-        },
-        "build": {
-          "buildTransitive/net6.0/_._": {}
         }
       },
       "Microsoft.Extensions.Localization/2.2.0": {
@@ -4094,7 +4053,7 @@
           "lib/netstandard1.3/System.Xml.XDocument.dll": {}
         }
       },
-      "Twilio/7.5.1": {
+      "Twilio/7.6.0": {
         "type": "package",
         "dependencies": {
           "Microsoft.IdentityModel.Tokens": "6.34.0",
@@ -4112,33 +4071,6 @@
             "related": ".xml"
           }
         }
-      },
-      "Twilio.AspNet.Common/8.0.2": {
-        "type": "package",
-        "compile": {
-          "lib/netstandard2.0/Twilio.AspNet.Common.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/Twilio.AspNet.Common.dll": {}
-        }
-      },
-      "Twilio.AspNet.Core/8.0.2": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Extensions.Configuration.Binder": "7.0.3",
-          "Microsoft.Extensions.Http": "7.0.0",
-          "Twilio": "6.2.4",
-          "Twilio.AspNet.Common": "8.0.2"
-        },
-        "compile": {
-          "lib/net7.0/Twilio.AspNet.Core.dll": {}
-        },
-        "runtime": {
-          "lib/net7.0/Twilio.AspNet.Core.dll": {}
-        },
-        "frameworkReferences": [
-          "Microsoft.AspNetCore.App"
-        ]
       }
     }
   },
@@ -5996,33 +5928,6 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "Microsoft.Extensions.Configuration.Binder/7.0.3": {
-      "sha512": "1eRFwJBrkkncTpvh6mivB8zg4uBVm6+Y6stEJERrVEqZZc8Hvf+N1iIgj2ySYDUQko4J1Gw1rLf1M8bG83F0eA==",
-      "type": "package",
-      "path": "microsoft.extensions.configuration.binder/7.0.3",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "buildTransitive/net461/Microsoft.Extensions.Configuration.Binder.targets",
-        "buildTransitive/net462/_._",
-        "buildTransitive/net6.0/_._",
-        "buildTransitive/netcoreapp2.0/Microsoft.Extensions.Configuration.Binder.targets",
-        "lib/net462/Microsoft.Extensions.Configuration.Binder.dll",
-        "lib/net462/Microsoft.Extensions.Configuration.Binder.xml",
-        "lib/net6.0/Microsoft.Extensions.Configuration.Binder.dll",
-        "lib/net6.0/Microsoft.Extensions.Configuration.Binder.xml",
-        "lib/net7.0/Microsoft.Extensions.Configuration.Binder.dll",
-        "lib/net7.0/Microsoft.Extensions.Configuration.Binder.xml",
-        "lib/netstandard2.0/Microsoft.Extensions.Configuration.Binder.dll",
-        "lib/netstandard2.0/Microsoft.Extensions.Configuration.Binder.xml",
-        "microsoft.extensions.configuration.binder.7.0.3.nupkg.sha512",
-        "microsoft.extensions.configuration.binder.nuspec",
-        "useSharedDesignerContext.txt"
-      ]
-    },
     "Microsoft.Extensions.Configuration.FileExtensions/8.0.1": {
       "sha512": "EJzSNO9oaAXnTdtdNO6npPRsIIeZCBSNmdQ091VDO7fBiOtJAAeEq6dtrVXIi3ZyjC5XRSAtVvF8SzcneRHqKQ==",
       "type": "package",
@@ -6291,33 +6196,6 @@
         "lib/netstandard2.0/Microsoft.Extensions.Hosting.Abstractions.xml",
         "microsoft.extensions.hosting.abstractions.2.2.0.nupkg.sha512",
         "microsoft.extensions.hosting.abstractions.nuspec"
-      ]
-    },
-    "Microsoft.Extensions.Http/7.0.0": {
-      "sha512": "9Pq9f/CvOSz0t9yQa6g1uWpxa2sm13daLFm8EZwy9MaQUjKXWdNUXQwIxwhmba5N83UIqURiPHSNqGK1vfWF2w==",
-      "type": "package",
-      "path": "microsoft.extensions.http/7.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "buildTransitive/net461/Microsoft.Extensions.Http.targets",
-        "buildTransitive/net462/_._",
-        "buildTransitive/net6.0/_._",
-        "buildTransitive/netcoreapp2.0/Microsoft.Extensions.Http.targets",
-        "lib/net462/Microsoft.Extensions.Http.dll",
-        "lib/net462/Microsoft.Extensions.Http.xml",
-        "lib/net6.0/Microsoft.Extensions.Http.dll",
-        "lib/net6.0/Microsoft.Extensions.Http.xml",
-        "lib/net7.0/Microsoft.Extensions.Http.dll",
-        "lib/net7.0/Microsoft.Extensions.Http.xml",
-        "lib/netstandard2.0/Microsoft.Extensions.Http.dll",
-        "lib/netstandard2.0/Microsoft.Extensions.Http.xml",
-        "microsoft.extensions.http.7.0.0.nupkg.sha512",
-        "microsoft.extensions.http.nuspec",
-        "useSharedDesignerContext.txt"
       ]
     },
     "Microsoft.Extensions.Localization/2.2.0": {
@@ -11370,10 +11248,10 @@
         "system.xml.xdocument.nuspec"
       ]
     },
-    "Twilio/7.5.1": {
-      "sha512": "56SB0A60Js2T32+OR8TLQ8M6WXdCQVLHv+LzEfG5m+zcHDRF8m7RhRB5gRqIBkJGKncikEc2oIBM+HHAYeTj4w==",
+    "Twilio/7.6.0": {
+      "sha512": "OmPcH5NBlKALxHfQgQs8hYNjIW0d54Qxi4rLtSs9aBmIWGvb/1QrPz9LTjJUy+NDtXi49StDbS+bdokJCExAhQ==",
       "type": "package",
-      "path": "twilio/7.5.1",
+      "path": "twilio/7.6.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -11386,37 +11264,8 @@
         "lib/net6.0/Twilio.xml",
         "lib/netstandard2.1/Twilio.dll",
         "lib/netstandard2.1/Twilio.xml",
-        "twilio.7.5.1.nupkg.sha512",
+        "twilio.7.6.0.nupkg.sha512",
         "twilio.nuspec"
-      ]
-    },
-    "Twilio.AspNet.Common/8.0.2": {
-      "sha512": "264FmpwK/0efs6Y5x86Am+KTvhnWNjfyLbuQKm3kB1AwfJMVMrUIrUZWGmu+qINsC6VFS1EU4xKl4OwZsnG+sQ==",
-      "type": "package",
-      "path": "twilio.aspnet.common/8.0.2",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "README.md",
-        "icon.png",
-        "lib/netstandard2.0/Twilio.AspNet.Common.dll",
-        "twilio.aspnet.common.8.0.2.nupkg.sha512",
-        "twilio.aspnet.common.nuspec"
-      ]
-    },
-    "Twilio.AspNet.Core/8.0.2": {
-      "sha512": "/Cz9WMCObGg0JVVnyhrEjiA+90+kB1hqmbGxsaX/Cz7w5rtLoBVUX3QThIx7/H6mwuQkuINPtij2qm7D7XX3rw==",
-      "type": "package",
-      "path": "twilio.aspnet.core/8.0.2",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "README.md",
-        "icon.png",
-        "lib/net6.0/Twilio.AspNet.Core.dll",
-        "lib/net7.0/Twilio.AspNet.Core.dll",
-        "twilio.aspnet.core.8.0.2.nupkg.sha512",
-        "twilio.aspnet.core.nuspec"
       ]
     }
   },
@@ -11436,12 +11285,9 @@
       "Microsoft.EntityFrameworkCore.Tools >= 8.0.10",
       "Microsoft.Extensions.Configuration >= 8.0.0",
       "Microsoft.Extensions.Configuration.Json >= 8.0.1",
-      "Microsoft.Extensions.DependencyInjection >= 8.0.1",
-      "Newtonsoft.Json >= 13.0.3",
       "Swashbuckle.AspNetCore >= 6.9.0",
       "System.IdentityModel.Tokens.Jwt >= 8.1.2",
-      "Twilio >= 7.5.1",
-      "Twilio.AspNet.Core >= 8.0.2"
+      "Twilio >= 7.6.0"
     ]
   },
   "packageFolders": {
@@ -11452,11 +11298,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\HarshdeepSingh\\Desktop\\Shantanu Code\\Shantanu_Backend\\Backend.csproj",
+      "projectUniqueName": "C:\\Users\\HarshdeepSingh\\Desktop\\Collab-Parking-System\\Backend\\Backend.csproj",
       "projectName": "Backend",
-      "projectPath": "C:\\Users\\HarshdeepSingh\\Desktop\\Shantanu Code\\Shantanu_Backend\\Backend.csproj",
+      "projectPath": "C:\\Users\\HarshdeepSingh\\Desktop\\Collab-Parking-System\\Backend\\Backend.csproj",
       "packagesPath": "C:\\Users\\HarshdeepSingh\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\HarshdeepSingh\\Desktop\\Shantanu Code\\Shantanu_Backend\\obj\\",
+      "outputPath": "C:\\Users\\HarshdeepSingh\\Desktop\\Collab-Parking-System\\Backend\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
@@ -11554,14 +11400,6 @@
             "target": "Package",
             "version": "[8.0.1, )"
           },
-          "Microsoft.Extensions.DependencyInjection": {
-            "target": "Package",
-            "version": "[8.0.1, )"
-          },
-          "Newtonsoft.Json": {
-            "target": "Package",
-            "version": "[13.0.3, )"
-          },
           "Swashbuckle.AspNetCore": {
             "target": "Package",
             "version": "[6.9.0, )"
@@ -11572,11 +11410,7 @@
           },
           "Twilio": {
             "target": "Package",
-            "version": "[7.5.1, )"
-          },
-          "Twilio.AspNet.Core": {
-            "target": "Package",
-            "version": "[8.0.2, )"
+            "version": "[7.6.0, )"
           }
         },
         "imports": [

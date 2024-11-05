@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "82AhPKK1Oq0=",
+  "dgSpecHash": "yx1UQZuWo7g=",
   "success": true,
-  "projectFilePath": "C:\\Users\\HarshdeepSingh\\Desktop\\Shantanu Code\\Shantanu_Backend\\Backend.csproj",
+  "projectFilePath": "C:\\Users\\HarshdeepSingh\\Desktop\\Collab-Parking-System\\Backend\\Backend.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\HarshdeepSingh\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\HarshdeepSingh\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
@@ -79,7 +79,6 @@
     "C:\\Users\\HarshdeepSingh\\.nuget\\packages\\microsoft.extensions.caching.memory\\8.0.1\\microsoft.extensions.caching.memory.8.0.1.nupkg.sha512",
     "C:\\Users\\HarshdeepSingh\\.nuget\\packages\\microsoft.extensions.configuration\\8.0.0\\microsoft.extensions.configuration.8.0.0.nupkg.sha512",
     "C:\\Users\\HarshdeepSingh\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\8.0.0\\microsoft.extensions.configuration.abstractions.8.0.0.nupkg.sha512",
-    "C:\\Users\\HarshdeepSingh\\.nuget\\packages\\microsoft.extensions.configuration.binder\\7.0.3\\microsoft.extensions.configuration.binder.7.0.3.nupkg.sha512",
     "C:\\Users\\HarshdeepSingh\\.nuget\\packages\\microsoft.extensions.configuration.fileextensions\\8.0.1\\microsoft.extensions.configuration.fileextensions.8.0.1.nupkg.sha512",
     "C:\\Users\\HarshdeepSingh\\.nuget\\packages\\microsoft.extensions.configuration.json\\8.0.1\\microsoft.extensions.configuration.json.8.0.1.nupkg.sha512",
     "C:\\Users\\HarshdeepSingh\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\8.0.1\\microsoft.extensions.dependencyinjection.8.0.1.nupkg.sha512",
@@ -90,7 +89,6 @@
     "C:\\Users\\HarshdeepSingh\\.nuget\\packages\\microsoft.extensions.fileproviders.physical\\8.0.0\\microsoft.extensions.fileproviders.physical.8.0.0.nupkg.sha512",
     "C:\\Users\\HarshdeepSingh\\.nuget\\packages\\microsoft.extensions.filesystemglobbing\\8.0.0\\microsoft.extensions.filesystemglobbing.8.0.0.nupkg.sha512",
     "C:\\Users\\HarshdeepSingh\\.nuget\\packages\\microsoft.extensions.hosting.abstractions\\2.2.0\\microsoft.extensions.hosting.abstractions.2.2.0.nupkg.sha512",
-    "C:\\Users\\HarshdeepSingh\\.nuget\\packages\\microsoft.extensions.http\\7.0.0\\microsoft.extensions.http.7.0.0.nupkg.sha512",
     "C:\\Users\\HarshdeepSingh\\.nuget\\packages\\microsoft.extensions.localization\\2.2.0\\microsoft.extensions.localization.2.2.0.nupkg.sha512",
     "C:\\Users\\HarshdeepSingh\\.nuget\\packages\\microsoft.extensions.localization.abstractions\\2.2.0\\microsoft.extensions.localization.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\HarshdeepSingh\\.nuget\\packages\\microsoft.extensions.logging\\8.0.1\\microsoft.extensions.logging.8.0.1.nupkg.sha512",
@@ -228,9 +226,7 @@
     "C:\\Users\\HarshdeepSingh\\.nuget\\packages\\system.windows.extensions\\6.0.0\\system.windows.extensions.6.0.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
-    "C:\\Users\\HarshdeepSingh\\.nuget\\packages\\twilio\\7.5.1\\twilio.7.5.1.nupkg.sha512",
-    "C:\\Users\\HarshdeepSingh\\.nuget\\packages\\twilio.aspnet.common\\8.0.2\\twilio.aspnet.common.8.0.2.nupkg.sha512",
-    "C:\\Users\\HarshdeepSingh\\.nuget\\packages\\twilio.aspnet.core\\8.0.2\\twilio.aspnet.core.8.0.2.nupkg.sha512"
+    "C:\\Users\\HarshdeepSingh\\.nuget\\packages\\twilio\\7.6.0\\twilio.7.6.0.nupkg.sha512"
   ],
   "logs": []
 }
