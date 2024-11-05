@@ -60,7 +60,7 @@ namespace Backend.Controllers
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
-            // Clear session data
+           
             HttpContext.Session.Clear();
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return Ok(new { Message = "Logged out successfully" });

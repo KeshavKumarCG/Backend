@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using Backend.Models;  // Assuming the Notification model is in the Models namespace
+using Backend.Models; 
 using System.Threading.Tasks;
 using Backend.Data;
-using Microsoft.EntityFrameworkCore; // For DbContext and DbUpdateException
+using Microsoft.EntityFrameworkCore;
 
 
 namespace YourNamespace.Controllers
