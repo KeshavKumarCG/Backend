@@ -1,6 +1,8 @@
 
 
 using Backend.Data;
+using Backend.Services;
+
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +30,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<JwtServices>();
 builder.Services.AddControllers();
+builder.Services.AddScoped<SmsService>();
+
+// Add Twilio configuration
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
 builder.Services.AddAuthentication(options =>
 {
