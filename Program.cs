@@ -1,4 +1,8 @@
+
+
 using Backend.Data;
+using Backend.Services;
+
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -11,17 +15,25 @@ var builder = WebApplication.CreateBuilder(args);
 
 Env.Load();
 
-var connectionString = Environment.GetEnvironmentVariable("Connect_String");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<CarParkingContext>(options =>
 {
     options.UseSqlServer(connectionString);
 });
 
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+{
+    options.UseSqlServer(connectionString);
+});
+
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<JwtServices>();
-
 builder.Services.AddControllers();
+builder.Services.AddScoped<SmsService>();
+
+// Add Twilio configuration
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
 builder.Services.AddDistributedMemoryCache();
 
@@ -129,3 +141,4 @@ app.UseSession();
 app.MapControllers();
 
 app.Run();
+

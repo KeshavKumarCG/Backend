@@ -14,7 +14,11 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Backend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
+<<<<<<< HEAD
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3e47810664e8c7f6a52cc135e181ef46ac8de75e")]
+=======
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+136e430c1a5d2a182f35e4e52c4591f7cb191449")]
+>>>>>>> TwilioNotification-Harshdeep
 [assembly: System.Reflection.AssemblyProductAttribute("Backend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Backend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
