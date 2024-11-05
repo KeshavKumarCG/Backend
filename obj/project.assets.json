@@ -11292,25 +11292,25 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\HarshdeepSingh\\.nuget\\packages\\": {},
+    "C:\\Users\\KeshavKumar\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\HarshdeepSingh\\Desktop\\Collab-Parking-System\\Backend\\Backend.csproj",
+      "projectUniqueName": "C:\\Users\\KeshavKumar\\Documents\\CG Assignment\\Backend\\Backend.csproj",
       "projectName": "Backend",
-      "projectPath": "C:\\Users\\HarshdeepSingh\\Desktop\\Collab-Parking-System\\Backend\\Backend.csproj",
-      "packagesPath": "C:\\Users\\HarshdeepSingh\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\HarshdeepSingh\\Desktop\\Collab-Parking-System\\Backend\\obj\\",
+      "projectPath": "C:\\Users\\KeshavKumar\\Documents\\CG Assignment\\Backend\\Backend.csproj",
+      "packagesPath": "C:\\Users\\KeshavKumar\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\KeshavKumar\\Documents\\CG Assignment\\Backend\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\HarshdeepSingh\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\KeshavKumar\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -11319,7 +11319,6 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -11440,13 +11439,5 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file C:\\Users\\HarshdeepSingh\\Desktop\\Collab-Parking-System\\Backend\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
-    }
-  ]
+  }
 }
