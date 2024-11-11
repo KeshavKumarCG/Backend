@@ -3,3 +3,4 @@ bin
 obj
 .env
 FirebaseAdmin
+FirebaseAdmin.json
