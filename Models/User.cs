@@ -1,33 +1,18 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using Backend.Models;
 
-namespace Backend.Models
+public class User
 {
-    public class User
-    {
-        [Key]
-        public int ID { get; set; }
+    public int ID { get; set; }
+    public string CYGID { get; set; }
+    public string Name { get; set; }
+    public string PhoneNumber { get; set; }
+    public string Email { get; set; }
+    public string Password { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public DateTime UpdatedAt { get; set; } = DateTime.Now;
+    public string CreatedBy { get; set; }
+    public string UpdatedBy { get; set; }
+    public string FirebaseToken { get; set; } 
 
-        [Required]
-        public string CYGID { get; set; }
-
-        [Required]
-        public string Name { get; set; }
-
-        [Required]
-        public string PhoneNumber { get; set; }
-
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; }
-
-        [Required]
-        public string Password { get; set; }
-
-        [Required]
-        public bool Role { get; set; }
-
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-    }
+    public virtual Role Role { get; set; }
 }

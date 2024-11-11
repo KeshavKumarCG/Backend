@@ -8,23 +8,23 @@ using System.Threading.Tasks;
 
 namespace Backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/valet")]
     [ApiController]
     public class ValetController : ControllerBase
     {
-        private readonly CarParkingContext _context;
+        private readonly CarParkingSystem _context;
 
-        public ValetController(CarParkingContext context)
+        public ValetController(CarParkingSystem context)
         {
             _context = context;
         }
 
-
         [HttpGet]
-        public async Task<ActionResult<List<User>>> GetValets()
+        public async Task<ActionResult<List<object>>> GetValets()
         {
             var valets = await _context.Users
-                .Where(u => u.Role == false)
+                .Include(u => u.Role)
+                .Where(u => u.Role != null && u.Role.ID == 2)
                 .Select(u => new
                 {
                     u.Name,
@@ -37,10 +37,11 @@ namespace Backend.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetValetById(int id)
+        public async Task<ActionResult<object>> GetValetById(int id)
         {
             var valet = await _context.Users
-                .Where(u => u.ID == id && u.Role == false)
+                .Include(u => u.Role)
+                .Where(u => u.ID == id && u.Role != null && u.Role.ID == 2)
                 .Select(u => new
                 {
                     u.Name,

@@ -12,9 +12,9 @@ namespace Backend.Controllers
     [Route("api/[controller]")]
     public class CarDetailsController : ControllerBase
     {
-        private readonly CarParkingContext _context;
+        private readonly CarParkingSystem _context;
 
-        public CarDetailsController(CarParkingContext context)
+        public CarDetailsController(CarParkingSystem context)
         {
             _context = context;
         }

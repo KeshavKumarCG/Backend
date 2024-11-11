@@ -8,5 +8,6 @@ namespace Backend.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

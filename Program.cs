@@ -1,15 +1,14 @@
-
-
 using Backend.Data;
 using Backend.Services;
-
+using DotNetEnv;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using DotNetEnv;
+using System.IO;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +16,8 @@ Env.Load();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-builder.Services.AddDbContext<CarParkingContext>(options =>
+// Configure DbContext for application
+builder.Services.AddDbContext<CarParkingSystem>(options =>
 {
     options.UseSqlServer(connectionString);
 });
@@ -27,16 +27,14 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString);
 });
 
+// Register application services
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<JwtServices>();
-builder.Services.AddControllers();
 builder.Services.AddScoped<SmsService>();
+builder.Services.AddScoped<FirebaseService>();  // Firebase service integration
 
-// Add Twilio configuration
-builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-
+// Add session and memory cache services
 builder.Services.AddDistributedMemoryCache();
-
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -44,6 +42,7 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
+// Authentication configuration
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -67,6 +66,13 @@ builder.Services.AddAuthentication(options =>
     options.LogoutPath = "/api/auth/logout";
 });
 
+// Add authorization services
+builder.Services.AddAuthorization(options =>
+{
+    // Define any specific authorization policies if needed
+});
+
+// CORS configuration
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngularApp", builder =>
@@ -78,8 +84,13 @@ builder.Services.AddCors(options =>
     });
 });
 
+// Register HttpContextAccessor for some services
 builder.Services.AddHttpContextAccessor();
 
+// Register controllers
+builder.Services.AddControllers();
+
+// Swagger configuration
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -110,7 +121,14 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+// Initialize Firebase Admin SDK
+FirebaseApp.Create(new AppOptions()
+{
+    Credential = GoogleCredential.FromFile(Path.Combine(AppContext.BaseDirectory, "FirebaseAdmin", "firebaseAdmin.json"))
+});
+
 var app = builder.Build();
+
 
 if (app.Environment.IsDevelopment())
 {
@@ -130,15 +148,12 @@ app.UseSwaggerUI(c =>
 });
 
 app.UseCors("AllowAngularApp");
-
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
-app.UseAuthorization();
+app.UseAuthorization(); 
 
 app.UseSession();
-
 app.MapControllers();
 
-app.Run();
-
+app.Run();  

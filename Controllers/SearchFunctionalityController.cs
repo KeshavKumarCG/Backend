@@ -1,18 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.Data;
-using Backend.Models; 
+using Backend.Models;
 using System.Threading.Tasks;
 
-namespace Backend.Controllers 
+namespace Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class SearchFunctionalityController : ControllerBase
     {
-        private readonly CarParkingContext _context;
+        private readonly CarParkingSystem _context;
 
-        public SearchFunctionalityController(CarParkingContext context)
+        public SearchFunctionalityController(CarParkingSystem context)
         {
             _context = context;
         }
@@ -22,8 +22,8 @@ namespace Backend.Controllers
         {
             var result = await (from car in _context.Cars
                                 join status in _context.CarStatus on car.StatusID equals status.ID
-                                join user in _context.Users on car.OwnerID equals user.ID
-                                where user.Role == true
+                                join user in _context.Users.Include(u => u.Role) on car.OwnerID equals user.ID
+                                where user.Role != null && user.Role.ID == 3
                                 select new
                                 {
                                     CarID = car.ID,

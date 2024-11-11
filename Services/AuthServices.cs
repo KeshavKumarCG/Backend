@@ -1,5 +1,5 @@
 ﻿using Backend.Models;
-using Microsoft.AspNetCore.Http; 
+using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
 public class AuthService
@@ -18,10 +18,12 @@ public class AuthService
         if (_jwServices.ValidateUser(loginModel, out var user))
         {
             var token = _jwServices.GenerateToken(user);
+
+            // Handle session management
             var session = _httpContextAccessor.HttpContext.Session;
             session.SetInt32("UserID", user.ID);
             session.SetString("Email", user.Email);
-            session.SetString("Role", user.Role ? "User" : "Valet");
+            session.SetString("Role", user.Role?.ID.ToString() ?? string.Empty);
 
             return (token, user);
         }

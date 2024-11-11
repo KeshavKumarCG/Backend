@@ -1,17 +1,17 @@
 ﻿using Backend.Data;
 using Backend.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-
 public class JwtServices
 {
-    private readonly CarParkingContext _context;
+    private readonly CarParkingSystem _context;
     private readonly IConfiguration _configuration;
 
-    public JwtServices(CarParkingContext context, IConfiguration configuration)
+    public JwtServices(CarParkingSystem context, IConfiguration configuration)
     {
         _context = context;
         _configuration = configuration;
@@ -27,7 +27,7 @@ public class JwtServices
             Subject = new ClaimsIdentity(new[]
             {
                 new Claim(ClaimTypes.Name, user.Email),
-                new Claim(ClaimTypes.Role, user.Role ? "User" : "Valet") 
+                new Claim(ClaimTypes.Role, user.Role?.ID.ToString() ?? "Unknown") // Handle role with fallback
             }),
             Expires = DateTime.UtcNow.AddHours(1),
             Issuer = _configuration["Jwt:Issuer"],
@@ -41,14 +41,17 @@ public class JwtServices
 
     public bool ValidateUser(LoginModel loginModel, out User? user)
     {
-        user = _context.Users.FirstOrDefault(u =>
-            u.Email == loginModel.EmailOrPhone || u.PhoneNumber == loginModel.EmailOrPhone);
+        user = _context.Users
+            .Include(u => u.Role)
+            .FirstOrDefault(u =>
+                u.Email == loginModel.EmailOrPhone || u.PhoneNumber == loginModel.EmailOrPhone);
 
         if (user == null)
         {
             return false;
         }
 
-        return loginModel.Password == user.Password; 
+        // Simple plain-text password comparison
+        return loginModel.Password == user.Password;
     }
 }

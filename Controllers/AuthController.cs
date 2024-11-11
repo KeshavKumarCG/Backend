@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http; 
+using Microsoft.AspNetCore.Http;
 
 namespace Backend.Controllers
 {
@@ -27,10 +27,18 @@ namespace Backend.Controllers
             if (token == null || user == null)
                 return Unauthorized();
 
+            string roleName = user.Role.ID switch
+            {
+                1 => "Admin",
+                2 => "Valet",
+                3 => "User",
+                _ => "Unknown"
+            };
+
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.Email),
-                new Claim(ClaimTypes.Role, user.Role ? "User" : "Valet"),
+                new Claim(ClaimTypes.Role, roleName),
                 new Claim("UserID", user.ID.ToString())
             };
 
@@ -47,12 +55,13 @@ namespace Backend.Controllers
 
             HttpContext.Session.SetInt32("UserID", user.ID);
             HttpContext.Session.SetString("UserName", user.Name);
+            HttpContext.Session.SetString("Role", roleName);
 
             return Ok(new
             {
                 Token = token,
                 Name = user.Email,
-                Role = user.Role ? "User" : "Valet",
+                Role = roleName,
                 ID = user.ID
             });
         }
@@ -60,7 +69,6 @@ namespace Backend.Controllers
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
-           
             HttpContext.Session.Clear();
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return Ok(new { Message = "Logged out successfully" });

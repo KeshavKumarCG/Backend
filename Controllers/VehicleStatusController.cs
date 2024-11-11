@@ -20,7 +20,6 @@ namespace Backend.Controllers
         {
             string message = $"Vehicle Status Update:\n" +
                              $"Owner: {notification.OwnerName}\n" +
-                            //   $"Owner Phone: {notification.OwnerPhoneNumber}\n" +
                              $"CYGID: {notification.Cygid}\n" +
                              $"Car Model: {notification.CarModel}\n" +
                              $"License Plate: {notification.LicensePlate}\n" +
