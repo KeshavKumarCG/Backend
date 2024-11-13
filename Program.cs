@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using DotNetEnv;
+using Backend;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +29,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 
 builder.Services.AddScoped<AuthService>();
-builder.Services.AddScoped<JwtServices>();
+builder.Services.AddScoped<JWTService>();
 builder.Services.AddControllers();
 builder.Services.AddScoped<SmsService>();
 

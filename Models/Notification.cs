@@ -41,7 +41,9 @@ namespace Backend.Models
         [Required]
         [MaxLength(50)]
         public string CarModel { get; set; }
-        
+
+        public string Email { get; set; }
+
         public DateTime NotificationTime { get; set; } = DateTime.Now;
     }
 }

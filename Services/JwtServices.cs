@@ -1,54 +1,92 @@
 ﻿using Backend.Data;
 using Backend.Models;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 
-
-public class JwtServices
+namespace Backend
 {
-    private readonly CarParkingContext _context;
-    private readonly IConfiguration _configuration;
-
-    public JwtServices(CarParkingContext context, IConfiguration configuration)
+    public class JWTService
     {
-        _context = context;
-        _configuration = configuration;
-    }
+        private readonly string _secretKey;
+        private readonly CarParkingContext _context;
 
-    public string GenerateToken(User user)
-    {
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"] ?? throw new InvalidOperationException("JWT Key is not configured."));
-
-        var tokenDescriptor = new SecurityTokenDescriptor
+        public JWTService(IConfiguration configuration, CarParkingContext context)
         {
-            Subject = new ClaimsIdentity(new[]
-            {
-                new Claim(ClaimTypes.Name, user.Email),
-                new Claim(ClaimTypes.Role, user.Role ? "User" : "Valet") 
-            }),
-            Expires = DateTime.UtcNow.AddHours(1),
-            Issuer = _configuration["Jwt:Issuer"],
-            Audience = _configuration["Jwt:Audience"],
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-        };
-
-        var token = tokenHandler.CreateToken(tokenDescriptor);
-        return tokenHandler.WriteToken(token);
-    }
-
-    public bool ValidateUser(LoginModel loginModel, out User? user)
-    {
-        user = _context.Users.FirstOrDefault(u =>
-            u.Email == loginModel.EmailOrPhone || u.PhoneNumber == loginModel.EmailOrPhone);
-
-        if (user == null)
-        {
-            return false;
+            _secretKey = configuration["Jwt:Key"] ?? throw new ArgumentNullException(nameof(configuration), "JWT Secret Key is not configured.");
+            _context = context ?? throw new ArgumentNullException(nameof(context), "Database context is not configured.");
         }
 
-        return loginModel.Password == user.Password; 
+        public string GenerateJwtToken(User user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user), "User cannot be null.");
+            }
+
+            if (string.IsNullOrEmpty(_secretKey))
+            {
+                throw new ArgumentException("JWT Secret Key is not configured.");
+            }
+
+            var role = user.Role != null ?
+                (user.Role.RoleType switch
+                {
+                    1 => "Admin",
+                    2 => "Valet",
+                    3 => "User",
+                    _ => "Unknown"
+                })
+                : "Unknown";
+
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.Name, user.Name),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, role),
+                new Claim(ClaimTypes.NameIdentifier, user.ID.ToString())
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: "yourapp",
+                audience: "yourapp",
+                claims: claims,
+                expires: DateTime.Now.AddHours(72),
+                signingCredentials: creds
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public bool ValidateUser(LoginModel loginModel, out User? user)
+        {
+            user = null;
+
+            if (loginModel == null || string.IsNullOrEmpty(loginModel.EmailOrPhone) || string.IsNullOrEmpty(loginModel.Password))
+            {
+                return false;
+            }
+
+            user = _context.Users
+                .FirstOrDefault(u => (u.Email == loginModel.EmailOrPhone || u.PhoneNumber == loginModel.EmailOrPhone));
+
+            if (user != null)
+            {
+                if (user.Password != loginModel.Password)
+                {
+                    user = null;
+                    return false;
+                }
+            }
+
+            return user != null;
+        }
     }
 }

@@ -1,11 +1,13 @@
-﻿using Backend.Models;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
+﻿using Backend.Data;
+using Backend.Models;
+using Backend.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http; 
 
 namespace Backend.Controllers
 {
@@ -13,57 +15,50 @@ namespace Backend.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly AuthService _authService;
+        private readonly CarParkingContext _context;
+        private readonly JWTService _jwtService;
 
-        public AuthController(AuthService authService)
+        public AuthController(CarParkingContext context, JWTService jwtService)
         {
-            _authService = authService;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _jwtService = jwtService ?? throw new ArgumentNullException(nameof(jwtService));
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginModel loginModel)
+        public async Task<IActionResult> Login([FromBody] LoginModel request)
         {
-            var (token, user) = _authService.Authenticate(loginModel);
-            if (token == null || user == null)
-                return Unauthorized();
-
-            var claims = new List<Claim>
+            if (request == null)
             {
-                new Claim(ClaimTypes.Name, user.Email),
-                new Claim(ClaimTypes.Role, user.Role ? "User" : "Valet"),
-                new Claim("UserID", user.ID.ToString())
-            };
+                return BadRequest("Invalid login request.");
+            }
 
-            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var user = await _context.Users
+                .Include(u => u.Role)
+                .Where(u => (u.Email == request.EmailOrPhone || u.PhoneNumber == request.EmailOrPhone) && u.Password == request.Password)
+                .FirstOrDefaultAsync();
 
-            var authProperties = new AuthenticationProperties
+            if (user == null)
             {
-                IsPersistent = true,
-                ExpiresUtc = DateTimeOffset.UtcNow.AddHours(1)
-            };
+                return Unauthorized("Invalid credentials.");
+            }
 
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(claimsIdentity), authProperties);
+            var token = _jwtService.GenerateJwtToken(user);
 
-            HttpContext.Session.SetInt32("UserID", user.ID);
-            HttpContext.Session.SetString("UserName", user.Name);
+            var session = HttpContext.Session;
+            session.SetInt32("UserID", user.ID); 
+            session.SetString("Email", user.Email);
+            session.SetInt32("Role", user.Role?.RoleType ?? 0);
 
-            return Ok(new
-            {
-                Token = token,
-                Name = user.Email,
-                Role = user.Role ? "User" : "Valet",
-                ID = user.ID
-            });
+            return Ok(new { token, userId = user.ID, email = user.Email, role = user.Role?.RoleType ?? 0 });
         }
 
         [HttpPost("logout")]
-        public async Task<IActionResult> Logout()
+        public IActionResult Logout()
         {
-           
+            Response.Cookies.Delete("AuthToken");
             HttpContext.Session.Clear();
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return Ok(new { Message = "Logged out successfully" });
+
+            return Ok();
         }
     }
 }
