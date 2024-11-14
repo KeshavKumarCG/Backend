@@ -26,7 +26,7 @@ namespace Backend.Controllers
                              $"License Plate: {notification.LicensePlate}\n" +
                              $"Status: Car is ready for pickup";
 
-            _smsService.SendSms("+919417230210", message);
+            _smsService.SendSms("8307224389", message);
 
             return Ok("Valet notified successfully");
         }

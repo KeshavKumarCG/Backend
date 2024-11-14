@@ -19,12 +19,12 @@ namespace Backend.Controllers
             _context = context;
         }
 
-        
+
         [HttpGet]
         public async Task<ActionResult<List<User>>> GetValets()
         {
             var valets = await _context.Users
-                .Where(u => u.Role.RoleType == 2) 
+                .Where(u => u.Role == false)
                 .Select(u => new
                 {
                     u.Name,
@@ -36,12 +36,11 @@ namespace Backend.Controllers
             return Ok(valets);
         }
 
-        // Get valet by ID
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetValetById(int id)
         {
             var valet = await _context.Users
-                .Where(u => u.ID == id && u.Role.RoleType == 2)  
+                .Where(u => u.ID == id && u.Role == false)
                 .Select(u => new
                 {
                     u.Name,
