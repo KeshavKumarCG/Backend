@@ -24,13 +24,18 @@ namespace Backend.Controllers
         public async Task<ActionResult<IEnumerable<CarDetails>>> GetCarDetailsByUserId(int id)
         {
             var cars = await _context.Cars
-                .Where(c => c.OwnerID == id) 
-                .Select(c => new CarDetails
-                {
-                    ID = c.ID,
-                    CarNumber = c.CarNumber,
-                    CarModel = c.CarModel
-                })
+                .Where(c => c.OwnerID == id)
+                .Join(
+                    _context.CarStatus,            // Joining with CarStatus table
+                    car => car.StatusID,            // Foreign key in Cars
+                    status => status.ID,            // Primary key in CarStatus
+                    (car, status) => new CarDetails // Projecting results
+                    {
+                        ID = car.ID,
+                        CarNumber = car.CarNumber,
+                        CarModel = car.CarModel,
+                        Status = status.Status       // Getting car status
+                    })
                 .ToListAsync();
 
             if (cars == null || !cars.Any())
@@ -38,7 +43,7 @@ namespace Backend.Controllers
                 return NotFound(); // Return 404 if no cars found
             }
 
-            return Ok(cars); // Return the list of car details
+            return Ok(cars); // Return the list of car details with status
         }
     }
 }

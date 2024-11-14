@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Mvc;
 using Backend.Models; 
 using System.Threading.Tasks;
@@ -32,6 +33,7 @@ namespace YourNamespace.Controllers
                 PhoneNumber = notification.PhoneNumber,
                 CarNumber = notification.CarNumber,
                 CarModel = notification.CarModel,
+                Email = notification.Email,
                 NotificationTime = DateTime.Now
             };
 
@@ -65,4 +67,5 @@ namespace YourNamespace.Controllers
         public string PhoneNumber { get; set; }
         public string CarNumber { get; set; }
         public string CarModel { get; set; }
+        public string Email { get; set; }
     }
