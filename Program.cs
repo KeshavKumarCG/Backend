@@ -1,8 +1,5 @@
-
-
 using Backend.Data;
 using Backend.Services;
-
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -14,30 +11,27 @@ using Backend;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Load environment variables
 Env.Load();
 
+// Get the connection string from the configuration
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
+// Register CarParkingContext with the database connection
 builder.Services.AddDbContext<CarParkingContext>(options =>
-{
-    options.UseSqlServer(connectionString);
-});
+    options.UseSqlServer(connectionString));
 
+// Register ApplicationDbContext with the same database connection (if needed)
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-{
-    options.UseSqlServer(connectionString);
-});
+    options.UseSqlServer(connectionString));
 
+// Register services for dependency injection
 builder.Services.AddScoped<AuthService>();
-builder.Services.AddScoped<JWTService>();
-builder.Services.AddControllers();
+builder.Services.AddScoped<JwtServices>();
 builder.Services.AddScoped<SmsService>();
 
-// Add Twilio configuration
-builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-
+// Add distributed memory cache for session management
 builder.Services.AddDistributedMemoryCache();
-
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -45,6 +39,7 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
+// Configure authentication with JWT and cookies
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -68,6 +63,7 @@ builder.Services.AddAuthentication(options =>
     options.LogoutPath = "/api/auth/logout";
 });
 
+// Configure CORS to allow requests from your Angular app
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngularApp", builder =>
@@ -79,8 +75,11 @@ builder.Services.AddCors(options =>
     });
 });
 
+// Add support for controllers and HTTP context accessor
+builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
 
+// Configure Swagger for API documentation
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -113,6 +112,7 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
+// Configure middleware for development or production
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
@@ -123,6 +123,7 @@ else
     app.UseHsts();
 }
 
+// Enable Swagger UI
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
@@ -130,16 +131,21 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = "swagger";
 });
 
+// Enable CORS policy
 app.UseCors("AllowAngularApp");
 
+// Enable HTTPS redirection
 app.UseHttpsRedirection();
 
+// Enable authentication and authorization
 app.UseAuthentication();
 app.UseAuthorization();
 
+// Enable session handling
 app.UseSession();
 
+// Map controller routes
 app.MapControllers();
 
+// Run the application
 app.Run();
-
