@@ -23,7 +23,7 @@ namespace Backend.Controllers
             var result = await (from car in _context.Cars
                                 join status in _context.CarStatus on car.StatusID equals status.ID
                                 join user in _context.Users on car.OwnerID equals user.ID
-                                where user.Role == true
+                                where user.Role == 3 // Regular User role
                                 select new
                                 {
                                     CarID = car.ID,
@@ -35,5 +35,7 @@ namespace Backend.Controllers
 
             return Ok(result);
         }
+
+
     }
 }

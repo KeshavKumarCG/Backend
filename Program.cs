@@ -29,7 +29,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 
 builder.Services.AddScoped<AuthService>();
-builder.Services.AddScoped<JWTService>();
+builder.Services.AddScoped<JwtServices>();
 builder.Services.AddControllers();
 builder.Services.AddScoped<SmsService>();
 

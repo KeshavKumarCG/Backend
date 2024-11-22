@@ -24,7 +24,7 @@ namespace Backend.Controllers
         public async Task<ActionResult<List<User>>> GetValets()
         {
             var valets = await _context.Users
-                .Where(u => u.Role == false)
+                .Where(u => u.Role == 2)
                 .Select(u => new
                 {
                     u.Name,
@@ -40,7 +40,7 @@ namespace Backend.Controllers
         public async Task<ActionResult<User>> GetValetById(int id)
         {
             var valet = await _context.Users
-                .Where(u => u.ID == id && u.Role == false)
+                .Where(u => u.ID == id && u.Role == 2)
                 .Select(u => new
                 {
                     u.Name,

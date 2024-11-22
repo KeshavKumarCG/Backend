@@ -22,13 +22,21 @@ public class JwtServices
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"] ?? throw new InvalidOperationException("JWT Key is not configured."));
 
+        string role = user.Role switch
+        {
+            1 => "Admin",
+            2 => "Valet",
+            3 => "User",
+            _ => throw new InvalidOperationException("Invalid role.")
+        };
+
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(new[]
             {
-                new Claim(ClaimTypes.Name, user.Email),
-                new Claim(ClaimTypes.Role, user.Role ? "User" : "Valet") 
-            }),
+            new Claim(ClaimTypes.Name, user.Email),
+            new Claim(ClaimTypes.Role, role)
+        }),
             Expires = DateTime.UtcNow.AddHours(1),
             Issuer = _configuration["Jwt:Issuer"],
             Audience = _configuration["Jwt:Audience"],
@@ -38,6 +46,7 @@ public class JwtServices
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
     }
+
 
     public bool ValidateUser(LoginModel loginModel, out User? user)
     {
