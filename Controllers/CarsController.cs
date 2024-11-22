@@ -43,11 +43,16 @@ namespace Backend.Controllers
                     });
                 }
 
-                // Insert into CarStatusLog
+  // Update car status directly to CarStatusLog
                 await _context.Database.ExecuteSqlRawAsync(
-                    @"INSERT INTO CarStatusLog (CarID, StatusID, UserID, CreatedAt, UpdatedAt) 
-                    VALUES ({0}, {1}, {2}, GETDATE(), GETDATE())",
-                    request.id, request.statusId, 1);
+    @"UPDATE CarStatusLog 
+    SET StatusID = {1}, 
+        UpdatedAt = GETDATE() 
+    WHERE CarID = {0} 
+    AND UserID = {2}",
+    request.id, request.statusId, 1);
+
+                    
 
                 return Ok(new
                 {
