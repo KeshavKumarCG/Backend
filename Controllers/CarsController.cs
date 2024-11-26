@@ -1,3 +1,4 @@
+
 using Backend.Data;
 using Backend.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -19,45 +20,58 @@ namespace Backend.Controllers
         }
 
         [HttpPatch]
-        public async Task<IActionResult> UpdateCarStatus([FromBody] CarStatusUpdateDto request)
+        public async Task<IActionResult> UpdateCarStatus([FromBody] CarPatchRequest request)
         {
-            if (string.IsNullOrEmpty(request.id) || string.IsNullOrEmpty(request.statusId))
+            if (string.IsNullOrEmpty(request.StatusID) || (string.IsNullOrEmpty(request.CarID) && string.IsNullOrEmpty(request.CarNumber)))
             {
-                return BadRequest(new { Message = "ID and StatusId are required" });
+                return BadRequest(new { Message = "StatusID and either CarID or CarNumber are required" });
             }
 
             try
             {
-                // Update car status directly
-                var rowsAffected = await _context.Database.ExecuteSqlRawAsync(
-                    "UPDATE Cars SET StatusID = {0}, UpdatedAt = GETDATE(), UpdatedBy = {1} WHERE ID = {2}",
-                    request.statusId, "system", request.id);
+                int rowsAffected = 0;
+
+                // Update car status by CarID if provided
+                if (!string.IsNullOrEmpty(request.CarID))
+                {
+                    rowsAffected = await _context.Database.ExecuteSqlRawAsync(
+                        @"UPDATE Cars 
+                          SET StatusID = {0}, UpdatedAt = GETDATE(), UpdatedBy = {1} 
+                          WHERE ID = {2}",
+                        request.StatusID, "system", request.CarID);
+                }
+                // Update car status by CarNumber if CarID is not provided
+                else if (!string.IsNullOrEmpty(request.CarNumber))
+                {
+                    rowsAffected = await _context.Database.ExecuteSqlRawAsync(
+                        @"UPDATE Cars 
+                          SET StatusID = {0}, UpdatedAt = GETDATE(), UpdatedBy = {1} 
+                          WHERE CarNumber = {2}",
+                        request.StatusID, "system", request.CarNumber);
+                }
 
                 if (rowsAffected == 0)
                 {
                     return NotFound(new
                     {
-                        id = request.id,
-                        statusId = request.statusId,
+                        CarID = request.CarID,
+                        CarNumber = request.CarNumber,
+                        StatusID = request.StatusID,
                         Message = "Car not found"
                     });
                 }
 
-  // Update car status directly to CarStatusLog
-                await _context.Database.ExecuteSqlRawAsync(
-    @"UPDATE CarStatusLog 
-    SET StatusID = {1}, 
-        UpdatedAt = GETDATE() 
-    WHERE CarID = {0} 
-    AND UserID = {2}",
-    request.id, request.statusId, 1);
-
-                    
+                // Update the CarStatusLog
+                // await _context.Database.ExecuteSqlRawAsync(
+                //     @"INSERT INTO CarStatusLog (CarID, StatusID, UpdatedAt, UpdatedBy) 
+                //       VALUES ({0}, {1}, GETDATE(), {2})",
+                //     request.CarID ?? "UNKNOWN", request.StatusID, "system");
 
                 return Ok(new
                 {
-                    id = request.id,
-                    statusId = request.statusId,
+                    CarID = request.CarID,
+                    CarNumber = request.CarNumber,
+                    StatusID = request.StatusID,
                     Message = "Car status updated successfully"
                 });
             }
@@ -66,11 +80,5 @@ namespace Backend.Controllers
                 return StatusCode(500, new { Message = "An error occurred while updating car status", Error = ex.Message });
             }
         }
-    }
-
-    public class CarStatusUpdateDto
-    {
-        public string id { get; set; }
-        public string statusId { get; set; }
     }
 }
