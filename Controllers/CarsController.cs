@@ -31,7 +31,6 @@ namespace Backend.Controllers
             {
                 int rowsAffected = 0;
 
-                // Update car status by CarID if provided
                 if (!string.IsNullOrEmpty(request.CarID))
                 {
                     rowsAffected = await _context.Database.ExecuteSqlRawAsync(
@@ -40,7 +39,7 @@ namespace Backend.Controllers
                           WHERE ID = {2}",
                         request.StatusID, "system", request.CarID);
                 }
-                // Update car status by CarNumber if CarID is not provided
+               
                 else if (!string.IsNullOrEmpty(request.CarNumber))
                 {
                     rowsAffected = await _context.Database.ExecuteSqlRawAsync(
