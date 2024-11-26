@@ -23,7 +23,7 @@ namespace Backend.Controllers
             var result = await (from car in _context.Cars
                                 join status in _context.CarStatus on car.StatusID equals status.ID
                                 join user in _context.Users on car.OwnerID equals user.ID
-                                where user.Role == 3 // Regular User role
+                                where user.RoleID == 3
                                 select new
                                 {
                                     CarID = car.ID,

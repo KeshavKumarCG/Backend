@@ -1,5 +1,5 @@
 ﻿using Backend.Models;
-using Microsoft.AspNetCore.Http; 
+using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
 public class AuthService
@@ -31,7 +31,9 @@ public class AuthService
 
             session.SetInt32("UserID", user.ID);
             session.SetString("Email", user.Email);
-            session.SetString("Role", user.Role switch
+
+            // Fetch role dynamically from user entity
+            session.SetString("Role", user.RoleID switch
             {
                 1 => "Admin",
                 2 => "Valet",

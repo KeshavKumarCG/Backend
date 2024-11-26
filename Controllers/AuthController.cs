@@ -27,7 +27,8 @@ namespace Backend.Controllers
             if (token == null || user == null)
                 return Unauthorized();
 
-            var role = user.Role switch
+            // Fetch role dynamically from the User entity
+            var role = user.RoleID switch
             {
                 1 => "Admin",
                 2 => "Valet",
