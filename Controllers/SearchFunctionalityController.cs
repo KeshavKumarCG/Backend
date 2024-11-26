@@ -30,7 +30,7 @@ namespace Backend.Controllers
                                     CarModel = car.CarModel,
                                     CarNumber = car.CarNumber,
                                     PhoneNumber = user.PhoneNumber,
-                                    Status = status.Status
+                                    Status = car.StatusID
                                 }).ToListAsync();
 
             return Ok(result);
