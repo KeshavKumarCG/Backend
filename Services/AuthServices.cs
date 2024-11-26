@@ -1,5 +1,5 @@
 ﻿using Backend.Models;
-using Microsoft.AspNetCore.Http; 
+using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
 public class AuthService
@@ -17,11 +17,29 @@ public class AuthService
     {
         if (_jwServices.ValidateUser(loginModel, out var user))
         {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
             var token = _jwServices.GenerateToken(user);
-            var session = _httpContextAccessor.HttpContext.Session;
+            var session = _httpContextAccessor.HttpContext?.Session;
+            if (session == null)
+            {
+                throw new InvalidOperationException("Session is not available");
+            }
+
             session.SetInt32("UserID", user.ID);
             session.SetString("Email", user.Email);
-            session.SetString("Role", user.Role ? "User" : "Valet");
+
+            // Fetch role dynamically from user entity
+            session.SetString("Role", user.RoleID switch
+            {
+                1 => "Admin",
+                2 => "Valet",
+                3 => "User",
+                _ => "Unknown"
+            });
 
             return (token, user);
         }

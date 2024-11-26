@@ -28,6 +28,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // Register services for dependency injection
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<JwtServices>();
+builder.Services.AddControllers();
 builder.Services.AddScoped<SmsService>();
 
 // Add distributed memory cache for session management

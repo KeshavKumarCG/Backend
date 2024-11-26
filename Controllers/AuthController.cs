@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http; 
+using Microsoft.AspNetCore.Http;
 
 namespace Backend.Controllers
 {
@@ -27,10 +27,19 @@ namespace Backend.Controllers
             if (token == null || user == null)
                 return Unauthorized();
 
+            // Fetch role dynamically from the User entity
+            var role = user.RoleID switch
+            {
+                1 => "Admin",
+                2 => "Valet",
+                3 => "User",
+                _ => "Unknown"
+            };
+
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.Email),
-                new Claim(ClaimTypes.Role, user.Role ? "User" : "Valet"),
+                new Claim(ClaimTypes.Role, role),
                 new Claim("UserID", user.ID.ToString())
             };
 
@@ -52,7 +61,7 @@ namespace Backend.Controllers
             {
                 Token = token,
                 Name = user.Email,
-                Role = user.Role ? "User" : "Valet",
+                Role = role,
                 ID = user.ID
             });
         }
@@ -60,7 +69,6 @@ namespace Backend.Controllers
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
-           
             HttpContext.Session.Clear();
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return Ok(new { Message = "Logged out successfully" });

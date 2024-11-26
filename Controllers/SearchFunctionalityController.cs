@@ -23,17 +23,19 @@ namespace Backend.Controllers
             var result = await (from car in _context.Cars
                                 join status in _context.CarStatus on car.StatusID equals status.ID
                                 join user in _context.Users on car.OwnerID equals user.ID
-                                where user.Role == true
+                                where user.RoleID == 3
                                 select new
                                 {
                                     CarID = car.ID,
                                     CarModel = car.CarModel,
                                     CarNumber = car.CarNumber,
                                     PhoneNumber = user.PhoneNumber,
-                                    Status = status.Status
+                                    Status = car.StatusID
                                 }).ToListAsync();
 
             return Ok(result);
         }
+
+
     }
 }
