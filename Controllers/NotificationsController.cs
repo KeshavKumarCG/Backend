@@ -87,14 +87,14 @@ namespace Backend.Controllers
                 var smtpClient = new SmtpClient("smtp.gmail.com")
                 {
                     Port = 587,
-                    Credentials = new NetworkCredential("keshavkumar21167@gmail.com", "bmgfaysjdqkfdcbk"),
+                    Credentials = new NetworkCredential("gursimrankaur1112@gmail.com", "zrsvaphdjihcwabz"),
                     EnableSsl = true,
                 };
               
 
                 var mailMessage = new MailMessage
                 {
-                    From = new MailAddress("keshavkumar21167@gmail.com"),
+                    From = new MailAddress("gursimrankaur1112@gmail.com"),
                     Subject = "Car Request Completed",
                     Body = $"Dear {notification.UserName},\n\n" +
                            $"Your request for car model {notification.CarModel} ({notification.CarNumber}) has been completed.\n\n" +
