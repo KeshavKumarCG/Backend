@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace YourNamespace.Controllers
 {
     [ApiController]
-    [Route("valet")]
+    [Route("api/valet")]
     public class ValetController : ControllerBase
     {
         private readonly CarParkingContext _context;
