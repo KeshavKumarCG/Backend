@@ -5,16 +5,15 @@ using System.Threading.Tasks;
 using Backend.Data;
 using Microsoft.EntityFrameworkCore;
 
-
-namespace YourNamespace.Controllers
+namespace Backend.Controllers
 {
     [ApiController]
-    [Route("valet")]
-    public class ValetController : ControllerBase
+    [Route("api/valet")]
+    public class ValetNotificationController : ControllerBase
     {
         private readonly CarParkingContext _context;
 
-        public ValetController(CarParkingContext context)
+        public ValetNotificationController(CarParkingContext context)
         {
             _context = context;
         }
@@ -46,12 +45,10 @@ namespace YourNamespace.Controllers
             }
             catch (DbUpdateException ex)
             {
-                // Handle the database update exception, such as duplicate phone number or car number.
                 return BadRequest($"Error saving notification: {ex.InnerException?.Message}");
             }
         }
 
-        // New endpoint to get notification count
         [HttpGet("notifications/count")]
         public async Task<IActionResult> GetNotificationCount()
         {
@@ -61,11 +58,11 @@ namespace YourNamespace.Controllers
     }
 }
 
-    public class ValetNotification
-    {
-        public string UserName { get; set; }
-        public string PhoneNumber { get; set; }
-        public string CarNumber { get; set; }
-        public string CarModel { get; set; }
-        public string Email { get; set; }
-    }
+public class ValetNotification
+{
+    public string UserName { get; set; }
+    public string PhoneNumber { get; set; }
+    public string CarNumber { get; set; }
+    public string CarModel { get; set; }
+    public string Email { get; set; }
+}
