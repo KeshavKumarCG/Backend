@@ -1,1 +1,1 @@
-select * from notifications;
+select * from users;
