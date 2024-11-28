@@ -57,20 +57,39 @@ namespace Backend.Controllers
             return CreatedAtAction(nameof(GetNotification), new { id = notification.NotificationID }, notification);
         }
 
+        [HttpPost("accept/{id}")]
+        public async Task<IActionResult> AcceptNotification(int id)
+        {
+            var notification = await _context.Notifications.FindAsync(id);
+            if (notification == null)
+            {
+            return NotFound();
+            }
+
+            // Send an email notification that the request is accepted
+            var emailSent = await SendEmailAsync(notification, "Car Request Accepted", $"Dear {notification.UserName},\n\nYour request for car model {notification.CarModel} ({notification.CarNumber}) has been accepted and is now in-transit.\n\nThank you for using our service.");
+            if (!emailSent)
+            {
+                return StatusCode(500, "Failed to send acceptance email.");
+            }
+
+            return Ok("Notification accepted and email sent.");
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteNotification(int id)
         {
             var notification = await _context.Notifications.FindAsync(id);
             if (notification == null)
             {
-                return NotFound();
+            return NotFound();
             }
 
             // Send an email notification before deleting the record
-            var emailSent = await SendEmailAsync(notification);
+            var emailSent = await SendEmailAsync(notification, "Car Request Completed", $"Dear {notification.UserName},\n\nYour request for car model {notification.CarModel} ({notification.CarNumber}) has been completed.\n\nThank you for using our service.");
             if (!emailSent)
             {
-                return StatusCode(500, "Failed to send notification email.");
+            return StatusCode(500, "Failed to send completion email.");
             }
 
             // Remove the notification from the database
@@ -80,39 +99,36 @@ namespace Backend.Controllers
             return NoContent();
         }
 
-        private async Task<bool> SendEmailAsync(Notification notification)
+        private async Task<bool> SendEmailAsync(Notification notification, string subject, string body)
         {
             try
             {
-                var smtpClient = new SmtpClient("smtp.gmail.com")
-                {
-                    Port = 587,
-                    Credentials = new NetworkCredential("gursimrankaur1112@gmail.com", "zrsvaphdjihcwabz"),
-                    EnableSsl = true,
-                };
-              
+            var smtpClient = new SmtpClient("smtp.gmail.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential("gursimrankaur1112@gmail.com", "zrsvaphdjihcwabz"),
+                EnableSsl = true,
+            };
 
-                var mailMessage = new MailMessage
-                {
-                    From = new MailAddress("gursimrankaur1112@gmail.com"),
-                    Subject = "Car Request Completed",
-                    Body = $"Dear {notification.UserName},\n\n" +
-                           $"Your request for car model {notification.CarModel} ({notification.CarNumber}) has been completed.\n\n" +
-                           "Thank you for using our service.",
-                    IsBodyHtml = false,
-                };
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress("gursimrankaur1112@gmail.com"),
+                Subject = subject,
+                Body = body,
+                IsBodyHtml = false,
+            };
 
-                // Send the email to the user's email address
-                mailMessage.To.Add(notification.Email);  // Use the email field
+            // Send the email to the user's email address
+            mailMessage.To.Add(notification.Email);
 
-                await smtpClient.SendMailAsync(mailMessage);
-                return true;
+            await smtpClient.SendMailAsync(mailMessage);
+            return true;
             }
             catch (Exception ex)
             {
-                // Log the error (optional)
-                Console.WriteLine($"Error sending email: {ex.Message}");
-                return false;
+            // Log the error (optional)
+            Console.WriteLine($"Error sending email: {ex.Message}");
+            return false;
             }
         }
     }
