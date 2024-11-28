@@ -8,30 +8,43 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using DotNetEnv;
 using Backend;
+using Backend.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Load environment variables
 Env.Load();
 
-// Get the connection string from the configuration
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+// Get environment variables
+var dbConnectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY");
+var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER");
+var jwtAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE");
+var twilioAccountSid = Environment.GetEnvironmentVariable("TWILIO_ACCOUNT_SID");
+var twilioAuthToken = Environment.GetEnvironmentVariable("TWILIO_AUTH_TOKEN");
+var twilioFromPhone = Environment.GetEnvironmentVariable("TWILIO_FROM_PHONE");
 
-// Register CarParkingContext with the database connection
+// Register DbContexts
 builder.Services.AddDbContext<CarParkingContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlServer(dbConnectionString));
 
-// Register ApplicationDbContext with the same database connection (if needed)
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlServer(dbConnectionString));
 
-// Register services for dependency injection
+// Register services
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<JwtServices>();
-builder.Services.AddControllers();
 builder.Services.AddScoped<SmsService>();
 
-// Add distributed memory cache for session management
+// Configure Twilio settings
+builder.Services.Configure<TwilioSettings>(options =>
+{
+    options.AccountSid = twilioAccountSid;
+    options.AuthToken = twilioAuthToken;
+    options.FromPhoneNumber = twilioFromPhone;
+});
+
+// Session configuration
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
@@ -40,7 +53,7 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-// Configure authentication with JWT and cookies
+// Authentication configuration
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -51,9 +64,11 @@ builder.Services.AddAuthentication(options =>
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
-        ValidateIssuer = false,
-        ValidateAudience = false,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+        ValidateIssuer = true,
+        ValidIssuer = jwtIssuer,
+        ValidateAudience = true,
+        ValidAudience = jwtAudience,
         ValidateLifetime = true,
         ClockSkew = TimeSpan.Zero
     };
@@ -64,7 +79,7 @@ builder.Services.AddAuthentication(options =>
     options.LogoutPath = "/api/auth/logout";
 });
 
-// Configure CORS to allow requests from your Angular app
+// CORS configuration
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngularApp", builder =>
@@ -76,25 +91,22 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Add support for controllers and HTTP context accessor
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
 
-// Configure Swagger for API documentation
+// Swagger configuration
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Car Parking System API", Version = "v1" });
-
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+        Description = "JWT Authorization header using the Bearer scheme",
         Name = "Authorization",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.ApiKey,
         Scheme = "Bearer"
     });
-
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
@@ -106,17 +118,22 @@ builder.Services.AddSwaggerGen(c =>
                     Id = "Bearer"
                 }
             },
-            new string[] {}
+            Array.Empty<string>()
         }
     });
 });
 
 var app = builder.Build();
 
-// Configure middleware for development or production
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Car Parking System API v1");
+        c.RoutePrefix = "swagger";
+    });
 }
 else
 {
@@ -124,29 +141,12 @@ else
     app.UseHsts();
 }
 
-// Enable Swagger UI
-app.UseSwagger();
-app.UseSwaggerUI(c =>
-{
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Car Parking System API v1");
-    c.RoutePrefix = "swagger";
-});
-
-// Enable CORS policy
 app.UseCors("AllowAngularApp");
-
-// Enable HTTPS redirection
 app.UseHttpsRedirection();
-
-// Enable authentication and authorization
 app.UseAuthentication();
 app.UseAuthorization();
-
-// Enable session handling
 app.UseSession();
-
-// Map controller routes
 app.MapControllers();
 
-// Run the application
 app.Run();
+
