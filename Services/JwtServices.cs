@@ -8,12 +8,16 @@ using System.Text;
 public class JwtServices
 {
     private readonly CarParkingContext _context;
-    private readonly IConfiguration _configuration;
+    private readonly string _jwtKey;
+    private readonly string _jwtIssuer;
+    private readonly string _jwtAudience;
 
-    public JwtServices(CarParkingContext context, IConfiguration configuration)
+    public JwtServices(CarParkingContext context)
     {
         _context = context;
-        _configuration = configuration;
+        _jwtKey = Environment.GetEnvironmentVariable("JWT_KEY");
+        _jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER");
+        _jwtAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE");
     }
 
     public string GenerateToken(User user)
@@ -24,15 +28,13 @@ public class JwtServices
         }
 
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"] ?? throw new InvalidOperationException("JWT Key is not configured."));
+        var key = Encoding.UTF8.GetBytes(_jwtKey);
 
-        // Retrieve RoleName dynamically from the database based on user role ID
         var roleName = _context.Roles
             .Where(r => r.RoleID == user.RoleID)
             .Select(r => r.RoleName)
             .FirstOrDefault() ?? throw new InvalidOperationException("Role not found.");
 
-        // Create JWT claims
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Name, user.Email),
@@ -43,8 +45,8 @@ public class JwtServices
         {
             Subject = new ClaimsIdentity(claims),
             Expires = DateTime.UtcNow.AddHours(1),
-            Issuer = _configuration["Jwt:Issuer"],
-            Audience = _configuration["Jwt:Audience"],
+            Issuer = _jwtIssuer,
+            Audience = _jwtAudience,
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
 
@@ -62,7 +64,6 @@ public class JwtServices
             return false;
         }
 
-        // Validate password (no hashing yet, plain comparison as per your setup)
         return loginModel.Password == user.Password;
     }
 }

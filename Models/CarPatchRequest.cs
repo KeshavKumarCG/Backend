@@ -13,6 +13,6 @@ namespace Backend.Models
         public string StatusID { get; set; } // Required
 
         [MaxLength(50)]
-        public string CarNumber { get; set; } // Optional if CarID is provided
+        public  string CarNumber { get; set; } // Optional if CarID is provided
     }
 }
